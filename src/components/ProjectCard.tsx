@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface ProjectCardProps {
   imageSrc: string;
@@ -6,7 +7,7 @@ interface ProjectCardProps {
   title: string;
   description: string;
   tags: string;
-  caseStudyLink: string;
+  slug: string; // Changed from caseStudyLink to slug
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -15,7 +16,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   tags,
-  caseStudyLink,
+  slug,
 }) => {
   return (
     <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-xl">
@@ -28,12 +29,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <h3 className="text-xl font-bold text-white">{title}</h3>
         <p className="text-sm text-stone-200">{tags}</p>
       </div>
-      <div className="absolute inset-0 flex translate-y-full flex-col items-center justify-center bg-glass-dark/50 p-6 text-center opacity-0 backdrop-blur-lg transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+      <Link to={`/projects/${slug}`} className="absolute inset-0 flex translate-y-full flex-col items-center justify-center bg-glass-dark/50 p-6 text-center opacity-0 backdrop-blur-lg transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
         <p className="mb-4 text-white">{description}</p>
-        <a className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-stone-200" href={caseStudyLink}>
+        <span className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-stone-200">
           View Case Study
-        </a>
-      </div>
+        </span>
+      </Link>
     </div>
   );
 };

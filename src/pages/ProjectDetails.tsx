@@ -1,0 +1,144 @@
+import React from "react";
+import { useParams, Link } from "react-router-dom";
+import { Github, Globe, ArrowRight } from "lucide-react";
+import Layout from "@/components/Layout";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { projects, Project } from "@/data/projects";
+
+const ProjectDetails: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const project = projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    return (
+      <Layout>
+        <Header />
+        <main className="mx-auto flex max-w-4xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32 min-h-[60vh]">
+          <h1 className="text-4xl font-bold mb-4">404</h1>
+          <p className="text-xl text-gray-600 mb-4">Project not found!</p>
+          <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
+            Return to Home
+          </Link>
+        </main>
+        <Footer />
+      </Layout>
+    );
+  }
+
+  const nextProject = project.nextProjectSlug ? projects.find(p => p.slug === project.nextProjectSlug) : undefined;
+
+  return (
+    <Layout>
+      <Header />
+      <main className="mx-auto max-w-4xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32">
+        <section className="flex flex-col items-center justify-center gap-4 text-center">
+          <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-5xl lg:text-6xl">
+            {project.title}
+          </h1>
+          <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl max-w-3xl">
+            {project.description}
+          </h2>
+        </section>
+
+        <section className="w-full py-12">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl">
+            <img
+              alt={project.imageAlt}
+              className="h-full w-full object-cover"
+              src={project.imageSrc}
+            />
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-12">
+          <div className="lg:col-span-2 flex flex-col gap-10">
+            <div className="flex flex-col gap-4">
+              <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Project Overview</h3>
+              <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
+                {project.overview}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+                <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                  {project.problem}
+                </p>
+              </div>
+              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+                <h4 className="text-xl font-bold tracking-tight">The Solution</h4>
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                  {project.solution}
+                </p>
+              </div>
+            </div>
+          </div>
+          <aside className="lg:col-span-1 flex flex-col gap-8">
+            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+              <h4 className="text-xl font-bold tracking-tight mb-4">My Role</h4>
+              <ul className="flex flex-col gap-2 text-stone-600 dark:text-stone-300 text-sm">
+                {project.role.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+              <h4 className="text-xl font-bold tracking-tight mb-4">Technologies Used</h4>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((tech, i) => (
+                  <span key={i} className="rounded-full border border-primary/50 bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+              <h4 className="text-xl font-bold tracking-tight mb-4">Project Links</h4>
+              <div className="flex flex-col gap-3">
+                {project.liveWebsiteLink && (
+                  <a className="flex items-center gap-2 text-primary transition hover:underline" href={project.liveWebsiteLink} target="_blank" rel="noopener noreferrer">
+                    <Globe className="h-5 w-5" />
+                    <span>Live Website</span>
+                  </a>
+                )}
+                {project.githubRepoLink && (
+                  <a className="flex items-center gap-2 text-primary transition hover:underline" href={project.githubRepoLink} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-5 w-5" />
+                    <span>GitHub Repository</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        {nextProject && (
+          <section className="w-full py-16 lg:py-24">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Next Project</h2>
+            </div>
+            <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+              <img
+                alt={nextProject.imageAlt}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                src={nextProject.imageSrc}
+              />
+              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 md:p-8">
+                <h3 className="text-2xl font-bold text-white md:text-3xl">{nextProject.title}</h3>
+                <p className="text-base text-stone-200">{nextProject.tags}</p>
+                <Link to={`/projects/${nextProject.slug}`} className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-stone-200">
+                  View Case Study
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
+      <Footer />
+    </Layout>
+  );
+};
+
+export default ProjectDetails;
