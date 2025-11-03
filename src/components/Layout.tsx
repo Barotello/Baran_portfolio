@@ -1,10 +1,13 @@
 import React from "react";
+import { useScrollToHash } from "@/hooks/use-scroll-to-hash"; // Yeni hook'u import ediyoruz
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  useScrollToHash(); // Hook'u burada çağırıyoruz
+
   return (
     <div className="font-display bg-background-light dark:bg-background-dark text-stone-900 dark:text-stone-100 antialiased">
       <div className="fixed top-0 left-0 right-0 h-full w-full z-[-1] overflow-hidden">
