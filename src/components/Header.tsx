@@ -10,7 +10,14 @@ const Header: React.FC = () => {
           <span className="font-bold text-lg">BD</span>
         </Link>
         <div className="hidden items-center gap-6 text-sm font-medium md:flex">
-          <Link className="transition hover:text-primary" to="/#projects">Projects</Link>
+          <NavLink
+            className={({ isActive }) =>
+              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+            }
+            to="/projects"
+          >
+            Projects
+          </NavLink>
           <NavLink
             className={({ isActive }) =>
               `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
