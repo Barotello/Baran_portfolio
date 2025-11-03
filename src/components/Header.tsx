@@ -37,9 +37,9 @@ const Header: React.FC = () => {
         </div>
         <div className="flex items-center gap-2 pr-1">
           <ThemeToggle /> {/* Replaced Share2 icon with ThemeToggle */}
-          <Link className="hidden h-9 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90 sm:flex" to="/#contact">
+          <a className="hidden h-9 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90 sm:flex" href="mailto:barandemirtas2@gmail.com" target="_blank" rel="noopener noreferrer">
             <span className="truncate">Get In Touch</span>
-          </Link>
+          </a>
         </div>
       </nav>
     </header>
