@@ -19,7 +19,14 @@ const Header: React.FC = () => {
           >
             About
           </NavLink>
-          <Link className="transition hover:text-primary" to="/#contact">Contact</Link>
+          <NavLink
+            className={({ isActive }) =>
+              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+            }
+            to="/blog"
+          >
+            Blog
+          </NavLink>
         </div>
         <div className="flex items-center gap-2 pr-1">
           <ThemeToggle /> {/* Replaced Share2 icon with ThemeToggle */}

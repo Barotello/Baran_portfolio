@@ -7,7 +7,8 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProjectDetails from "./pages/ProjectDetails";
-import About from "./pages/About"; // Import the new About page
+import About from "./pages/About";
+import Blog from "./pages/Blog"; // Import the new Blog page
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/projects/:slug" element={<ProjectDetails />} />
-            <Route path="/about" element={<About />} /> {/* New route for About page */}
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} /> {/* New route for Blog page */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
