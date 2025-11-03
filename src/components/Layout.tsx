@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-500 rounded-full filter blur-3xl opacity-20"></div>
         <div className="absolute top-[10%] right-[-15%] w-[40%] h-[40%] bg-pink-500 rounded-full filter blur-3xl opacity-15"></div>
       </div>
-      <div className="relative w-full overflow-x-hidden">
+      <div className="relative w-full"> {/* overflow-x-hidden kaldırıldı */}
         {children}
       </div>
     </div>
