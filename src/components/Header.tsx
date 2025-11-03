@@ -1,5 +1,5 @@
 import React from "react";
-import { Share2 } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle"; // Import the new ThemeToggle component
 
 const Header: React.FC = () => {
   return (
@@ -14,9 +14,7 @@ const Header: React.FC = () => {
           <a className="transition hover:text-primary" href="#contact">Contact</a>
         </div>
         <div className="flex items-center gap-2 pr-1">
-          <a className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10" href="#">
-            <Share2 className="h-5 w-5" />
-          </a>
+          <ThemeToggle /> {/* Replaced Share2 icon with ThemeToggle */}
           <a className="hidden h-9 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90 sm:flex" href="#contact">
             <span className="truncate">Get In Touch</span>
           </a>
