@@ -79,8 +79,8 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
         // Custom border radius from user's HTML
-        "DEFAULT": "0.5rem",
-        "xl": "1rem",
+        "DEFAULT": "0.25rem", // Updated to match the HTML
+        "xl": "0.75rem", // Updated to match the HTML
         "full": "9999px"
       },
       keyframes: {
@@ -107,5 +107,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/container-queries")],
 } satisfies Config;
