@@ -4,7 +4,7 @@ import { ThemeToggle } from "./ThemeToggle"; // Import the new ThemeToggle compo
 
 const Header: React.FC = () => {
   return (
-    <header className="sticky top-4 z-50 mx-auto max-w-4xl px-4">
+    <header className="sticky top-0 z-50 mx-auto max-w-4xl px-4">
       <nav className="flex items-center justify-between rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light dark:bg-glass-dark p-2.5 shadow-lg backdrop-blur-xl">
         <Link className="flex items-center gap-2 pl-3" to="/"> {/* Use Link for home */}
           <span className="font-bold text-lg">BD</span>
