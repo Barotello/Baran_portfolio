@@ -5,8 +5,11 @@ const HeroSection: React.FC = () => {
     <section className="flex min-h-[50vh] flex-col items-center justify-center gap-8 text-center" id="home">
       <div className="flex flex-col gap-4">
         <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl lg:text-7xl">
-          Baran Demirtaş, Product Designer &amp; Developer
+          Baran Demirtaş
         </h1>
+        <p className="text-2xl font-medium text-stone-600 dark:text-stone-300 md:text-3xl">
+          Product Designer &amp; Developer
+        </p>
         <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl">
           Crafting intuitive digital experiences where clean design meets robust development.
         </h2>
