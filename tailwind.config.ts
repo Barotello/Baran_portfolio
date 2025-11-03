@@ -62,8 +62,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Custom colors from user's HTML
-        "primary": "#007AFF",
+        // Custom colors from user's HTML (excluding the conflicting 'primary')
         "background-light": "#F5F5F7",
         "background-dark": "#1D1D1F",
         "glass-light": "rgba(255, 255, 255, 0.6)",
