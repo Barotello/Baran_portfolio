@@ -7,7 +7,7 @@ const HeroSection: React.FC = () => {
         <h1 className="text-4xl font-black leading-tight tracking-tighter md:text-6xl lg:text-7xl">
           Baran Demirtaş
         </h1>
-        <p className="text-2xl font-medium text-stone-600 dark:text-stone-300 md:text-3xl">
+        <p className="text-2xl font-display font-medium text-stone-600 dark:text-stone-300 md:text-3xl">
           Product Designer &amp; Developer
         </p>
         <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl">
