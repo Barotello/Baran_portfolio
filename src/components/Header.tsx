@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for internal navigation
+import { Link, NavLink } from "react-router-dom"; // Import NavLink for active link styling
 import { ThemeToggle } from "./ThemeToggle"; // Import the new ThemeToggle component
 
 const Header: React.FC = () => {
@@ -11,7 +11,14 @@ const Header: React.FC = () => {
         </Link>
         <div className="hidden items-center gap-6 text-sm font-medium md:flex">
           <Link className="transition hover:text-primary" to="/#projects">Projects</Link>
-          <Link className="transition hover:text-primary" to="/about">About</Link> {/* Updated to /about route */}
+          <NavLink
+            className={({ isActive }) =>
+              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+            }
+            to="/about"
+          >
+            About
+          </NavLink>
           <Link className="transition hover:text-primary" to="/#contact">Contact</Link>
         </div>
         <div className="flex items-center gap-2 pr-1">
