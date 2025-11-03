@@ -96,6 +96,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background-light dark:bg-background-dark text-stone-900 dark:text-stone-100 antialiased font-display;
   }
 }

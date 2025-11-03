@@ -62,11 +62,27 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors from user's HTML
+        "primary": "#007AFF",
+        "background-light": "#F5F5F7",
+        "background-dark": "#1D1D1F",
+        "glass-light": "rgba(255, 255, 255, 0.6)",
+        "glass-dark": "rgba(45, 45, 47, 0.6)",
+        "glass-border-light": "rgba(255, 255, 255, 0.8)",
+        "glass-border-dark": "rgba(60, 60, 62, 0.8)",
+      },
+      fontFamily: {
+        // Custom font family from user's HTML
+        "display": ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        // Custom border radius from user's HTML
+        "DEFAULT": "0.5rem",
+        "xl": "1rem",
+        "full": "9999px"
       },
       keyframes: {
         "accordion-down": {
