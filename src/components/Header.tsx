@@ -32,7 +32,7 @@ const Header: React.FC = () => {
             }
             to="/blog"
           >
-            Blog
+            Journal
           </NavLink>
         </div>
         <div className="flex items-center gap-2 pr-1">
