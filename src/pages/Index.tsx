@@ -3,8 +3,7 @@ import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import AboutSection from "@/components/AboutSection";
-import ContactSection from "@/components/ContactSection";
+import ContactSection from "@/components/ContactSection"; // AboutSection kaldırıldı
 import Footer from "@/components/Footer";
 
 const Index: React.FC = () => {
@@ -14,7 +13,7 @@ const Index: React.FC = () => {
       <main className="mx-auto flex max-w-4xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32">
         <HeroSection />
         <ProjectsSection />
-        <AboutSection />
+        {/* AboutSection kaldırıldı */}
         <ContactSection />
       </main>
       <Footer />
