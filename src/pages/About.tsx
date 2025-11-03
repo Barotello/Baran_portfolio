@@ -16,11 +16,11 @@ const About: React.FC = () => {
             <div className="sticky top-32 flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
               <img
                 className="aspect-square w-48 rounded-full object-cover shadow-lg lg:w-full lg:rounded-2xl"
-                alt="Professional headshot of Jane Doe, smiling warmly."
+                alt="Professional headshot of Baran Demirtaş, smiling warmly."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuALXJfMwySBNcfk1gLMZvWPhTCRqEi6AV56yyEcWirFpm638L7oH2yDxA8siy8ydu5lefzGWFa7Xw5Q2nrcffu0AEMNAndAkhuQYgl1NSkb4-lz1ca4zkc6q8sTBSI5WheiChvKdixoC8KwqK238vjs-mlc55uMuFWM-nB_RityyswJWld5D_9gOSIKOyFZvKZ3QsPpvfgDufPIGamI5EE6EqSi5MIJrlWuI0tTOoAVISw_2O2YuoLj8rqAOGXtenfPxtBvYVNVeA"
               />
               <div className="flex flex-col gap-2">
-                <h1 className="text-4xl font-bold tracking-tight">Jane Doe</h1>
+                <h1 className="text-4xl font-bold tracking-tight">Baran Demirtaş</h1>
                 <h2 className="text-xl text-stone-600 dark:text-stone-300">
                   Product Designer &amp; Developer
                 </h2>

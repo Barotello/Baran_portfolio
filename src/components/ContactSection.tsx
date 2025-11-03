@@ -9,7 +9,7 @@ const ContactSection: React.FC = () => {
         <p className="max-w-xl text-stone-600 dark:text-stone-300">
           Have a project in mind, or just want to say hello? I'd love to hear from you. Feel free to reach out via email or connect with me on social media.
         </p>
-        <a className="mt-4 text-xl font-semibold text-primary transition hover:underline" href="mailto:hello@janedoe.com">hello@janedoe.com</a>
+        <a className="mt-4 text-xl font-semibold text-primary transition hover:underline" href="mailto:hello@barandemirtas.com">hello@barandemirtas.com</a>
         <div className="mt-4 flex gap-4">
           <a aria-label="LinkedIn" className="grid h-12 w-12 place-items-center rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 transition hover:bg-black/5 dark:hover:bg-white/10" href="#">
             <Linkedin className="h-6 w-6" />
