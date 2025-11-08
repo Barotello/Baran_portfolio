@@ -15,26 +15,29 @@ const Blog: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
-
-  const categories = ["All", "UI/UX", "Development", "Case Study"]; // Updated to match potential categories from DB
+  const [categories, setCategories] = useState<string[]>(["All"]); // Kategorileri dinamik hale getiriyoruz
 
   useEffect(() => {
-    const fetchBlogPosts = async () => {
+    const fetchBlogPostsAndCategories = async () => {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data: postsData, error: postsError } = await supabase
         .from('blog_posts')
-        .select('*')
-        .order('date', { ascending: false }); // Order by date
+        .select('*, category') // Kategori sütununu da seçiyoruz
+        .order('date', { ascending: false });
 
-      if (error) {
-        showError("Error fetching blog posts: " + error.message);
+      if (postsError) {
+        showError("Error fetching blog posts: " + postsError.message);
       } else {
-        setAllBlogPosts(data || []);
+        setAllBlogPosts(postsData || []);
+
+        // Benzersiz kategorileri çıkar ve 'All' ile birleştir
+        const uniqueCategories = Array.from(new Set(postsData?.map(post => post.category))).filter(Boolean) as string[];
+        setCategories(["All", ...uniqueCategories]);
       }
       setLoading(false);
     };
 
-    fetchBlogPosts();
+    fetchBlogPostsAndCategories();
   }, []);
 
   const filteredPosts = allBlogPosts.filter(post => {
@@ -48,8 +51,8 @@ const Blog: React.FC = () => {
     return (
       <Layout>
         <Header />
-        <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5 min-h-[60vh]"> {/* max-w-5xl -> max-w-7xl olarak değiştirildi */}
-          <p className="text-center">Loading blog posts...</p>
+        <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5 min-h-[60vh]">
+          <p className="text-center">Loading journal entries...</p>
         </main>
         <Footer />
       </Layout>
@@ -59,7 +62,7 @@ const Blog: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5"> {/* max-w-5xl -> max-w-7xl olarak değiştirildi */}
+      <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5">
         {/* PageHeading */}
         <div className="flex flex-wrap justify-between gap-3 p-4">
           <div className="flex min-w-72 flex-col gap-3">
@@ -107,7 +110,7 @@ const Blog: React.FC = () => {
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <BlogPostCard
-                key={post.id} // Use post.id for key
+                key={post.id}
                 slug={post.slug}
                 category={post.category}
                 title={post.title}
@@ -118,7 +121,7 @@ const Blog: React.FC = () => {
               />
             ))
           ) : (
-            <p className="text-center text-gray-600 dark:text-gray-400">No blog posts found matching your criteria.</p>
+            <p className="text-center text-gray-600 dark:text-gray-400">No journal entries found matching your criteria.</p>
           )}
         </div>
 
@@ -127,7 +130,7 @@ const Blog: React.FC = () => {
           <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-white/20 bg-white/40 text-gray-600 backdrop-blur-md hover:bg-white/60 dark:bg-black/30 dark:text-gray-400 dark:hover:bg-black/50">
             <ChevronLeft className="h-5 w-5" />
           </Button>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Page 1 of 1</span> {/* Updated to reflect no pagination yet */}
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Page 1 of 1</span>
           <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-white/20 bg-white/40 text-gray-600 backdrop-blur-md hover:bg-white/60 dark:bg-black/30 dark:text-gray-400 dark:hover:bg-black/50">
             <ChevronRight className="h-5 w-5" />
           </Button>
