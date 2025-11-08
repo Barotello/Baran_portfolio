@@ -20,7 +20,7 @@ const AboutLoginSection: React.FC = () => {
   }
 
   return (
-    <div id="admin-login" className="w-full p-6 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 shadow-lg backdrop-blur-xl">
+    <div id="admin-login" className="mx-auto max-w-sm p-6 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 shadow-lg backdrop-blur-xl">
       <h3 className="text-2xl font-bold mb-6 text-center">Admin Login</h3>
       <Auth
         supabaseClient={supabase}
