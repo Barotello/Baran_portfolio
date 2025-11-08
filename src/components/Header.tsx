@@ -100,13 +100,13 @@ const Header: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <Link // Oturum açmamış kullanıcılar için 'Get Contact' butonu
-                to="/#contact"
+              <a // Link yerine a etiketi kullanıyoruz çünkü mailto harici bir protokoldür
+                href="mailto:barandemirtas2@gmail.com"
                 className="flex h-9 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90"
                 aria-label="Get Contact"
               >
                 <span className="truncate">Get Contact</span>
-              </Link>
+              </a>
             )
           )}
         </div>
