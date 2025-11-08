@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Briefcase, GraduationCap, Download } from "lucide-react";
+import { Briefcase, GraduationCap, Download, Award } from "lucide-react"; // Award ikonunu import ediyoruz
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -99,13 +99,18 @@ const About: React.FC = () => {
         );
       case 'certificate':
         return (
-          <div>
-            <h4 className="font-bold">{section.title}</h4>
-            {section.details && section.details.length > 0 && (
-              <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
-                {section.details.map((item, i) => <li key={i}>{item}</li>)}
-              </ul>
-            )}
+          <div className="flex gap-6">
+            <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
+              <Award className="h-6 w-6" /> {/* Award ikonunu buraya ekliyoruz */}
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold">{section.title}</h4>
+              {section.details && section.details.length > 0 && (
+                <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
+                  {section.details.map((item, i) => <li key={i}>{item}</li>)}
+                </ul>
+              )}
+            </div>
           </div>
         );
       default:
