@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BlogPost } from "@/data/blogPosts";
 import { showError } from "@/utils/toast";
-import { format } from "date-fns";
+import BlogPostCard from "./BlogPostCard"; // BlogPostCard'ı import ediyoruz
 
 const BlogSection: React.FC = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -57,33 +57,16 @@ const BlogSection: React.FC = () => {
         <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Latest Journal Entries</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {blogPosts.map((post) => (
-            <Link to={`/blog/${post.slug}`} key={post.id} className="group flex flex-col rounded-xl border border-white/20 bg-white/40 p-4 shadow-lg backdrop-blur-lg transition-transform duration-300 hover:scale-[1.02] dark:bg-black/30">
-              <div
-                className="w-full shrink-0 rounded-lg bg-cover bg-center bg-no-repeat aspect-video"
-                style={{ backgroundImage: `url("${post.image_src}")` }}
-                aria-label={post.image_alt}
-              ></div>
-              <div className="flex w-full min-w-0 grow flex-col items-stretch justify-center gap-2 py-4">
-                <p className="text-sm font-normal uppercase tracking-wider text-primary dark:text-primary">
-                  {post.category}
-                </p>
-                <p className="text-xl font-bold leading-tight tracking-[-0.015em] text-gray-900 dark:text-white">
-                  {post.title}
-                </p>
-                <p className="text-base font-normal leading-normal text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {post.description}
-                </p>
-                <div className="flex items-center justify-between gap-3 pt-2">
-                  <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                    {format(new Date(post.date), 'MMMM dd, yyyy')}
-                  </p>
-                  <span className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-8 text-sm font-medium text-primary hover:text-primary/80">
-                    <span className="truncate">Read More</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-            </Link>
+            <BlogPostCard
+              key={post.id}
+              slug={post.slug}
+              category={post.category}
+              title={post.title}
+              description={post.description}
+              date={post.date}
+              imageSrc={post.image_src}
+              imageAlt={post.image_alt}
+            />
           ))}
         </div>
         <div className="mt-12 text-center">
