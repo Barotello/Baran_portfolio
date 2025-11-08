@@ -30,8 +30,10 @@ const ProjectsSection: React.FC = () => {
   if (loading) {
     return (
       <section className="w-full py-16 lg:py-24" id="projects">
-        <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
-        <p className="text-center">Loading projects...</p>
+        <div className="mx-auto max-w-4xl px-4"> {/* İçerik için yeni sarmalayıcı */}
+          <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+          <p className="text-center">Loading projects...</p>
+        </div>
       </section>
     );
   }
@@ -39,27 +41,31 @@ const ProjectsSection: React.FC = () => {
   if (projects.length === 0) {
     return (
       <section className="w-full py-16 lg:py-24" id="projects">
-        <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
-        <p className="text-center text-gray-600 dark:text-gray-400">No projects to display yet.</p>
+        <div className="mx-auto max-w-4xl px-4"> {/* İçerik için yeni sarmalayıcı */}
+          <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+          <p className="text-center text-gray-600 dark:text-gray-400">No projects to display yet.</p>
+        </div>
       </section>
     );
   }
 
   return (
     <section className="w-full py-16 lg:py-24" id="projects">
-      <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            imageSrc={project.image_src}
-            imageAlt={project.image_alt}
-            title={project.title}
-            tags={project.tags}
-            description={project.description}
-            slug={project.slug}
-          />
-        ))}
+      <div className="mx-auto max-w-4xl px-4"> {/* İçerik için yeni sarmalayıcı */}
+        <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              imageSrc={project.image_src}
+              imageAlt={project.image_alt}
+              title={project.title}
+              tags={project.tags}
+              description={project.description}
+              slug={project.slug}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

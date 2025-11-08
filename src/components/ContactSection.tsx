@@ -4,7 +4,7 @@ import { Linkedin, Github } from "lucide-react";
 const ContactSection: React.FC = () => {
   return (
     <section className="w-full py-16 text-center lg:py-24" id="contact">
-      <div className="flex flex-col items-center gap-4">
+      <div className="mx-auto max-w-4xl px-4 flex flex-col items-center gap-4"> {/* İçerik için yeni sarmalayıcı */}
         <h2 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Let's Connect</h2>
         <p className="max-w-xl text-stone-600 dark:text-stone-300">
           Have a project in mind, or just want to say hello? I'd love to hear from you. Feel free to reach out via email or connect with me on social media.

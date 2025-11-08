@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 const AboutSection: React.FC = () => {
   return (
     <section className="w-full py-16 lg:py-24" id="about">
-      <div className="flex flex-col items-center gap-8 text-center">
+      <div className="mx-auto max-w-4xl px-4 flex flex-col items-center gap-8 text-center"> {/* İçerik için yeni sarmalayıcı */}
         {/* Yuvarlak profil resmi buradan kaldırıldı */}
         <h2 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl">About Me</h2>
         <p className="max-w-xl text-lg text-stone-600 dark:text-stone-300">
