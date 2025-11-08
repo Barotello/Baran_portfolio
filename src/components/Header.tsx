@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-4 z-50 mx-auto max-w-5xl px-4">
-      <nav className="flex items-center justify-between rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light dark:bg-glass-dark p-2.5 shadow-lg backdrop-blur-xl">
+      <nav className="flex items-center justify-between rounded-full border border-border bg-background p-2.5 shadow-lg">
         <Link className="flex items-center gap-2 pl-3" to="/">
           <span className="font-bold text-lg">BD</span>
         </Link>

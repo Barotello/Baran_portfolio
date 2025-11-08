@@ -13,19 +13,19 @@ const Index: React.FC = () => {
     <Layout>
       <Header />
       <main className="flex flex-col items-center pt-16 sm:pt-24 lg:pt-32"> {/* max-w-4xl ve px-4 kaldırıldı */}
-        <div className="w-full bg-background"> {/* HeroSection için varsayılan arka plan */}
+        <div className="w-full"> {/* HeroSection için varsayılan arka plan */}
           <HeroSection />
         </div>
-        <div className="w-full bg-muted"> {/* ProjectsSection için farklı arka plan */}
+        <div className="w-full"> {/* ProjectsSection için farklı arka plan */}
           <ProjectsSection />
         </div>
-        <div className="w-full bg-background"> {/* AboutSection için varsayılan arka plan */}
+        <div className="w-full"> {/* AboutSection için varsayılan arka plan */}
           <AboutSection />
         </div>
-        <div className="w-full bg-muted"> {/* BlogSection için farklı arka plan */}
+        <div className="w-full"> {/* BlogSection için farklı arka plan */}
           <BlogSection />
         </div>
-        <div className="w-full bg-background"> {/* ContactSection için varsayılan arka plan */}
+        <div className="w-full"> {/* ContactSection için varsayılan arka plan */}
           <ContactSection />
         </div>
       </main>

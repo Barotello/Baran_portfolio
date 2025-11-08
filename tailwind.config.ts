@@ -63,8 +63,6 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         // Custom colors from user's HTML (excluding the conflicting 'primary')
-        "background-light": "#F5F5F7",
-        "background-dark": "#1D1D1F",
         "glass-light": "rgba(255, 255, 255, 0.6)",
         "glass-dark": "rgba(45, 45, 47, 0.6)",
         "glass-border-light": "rgba(255, 255, 255, 0.8)",
