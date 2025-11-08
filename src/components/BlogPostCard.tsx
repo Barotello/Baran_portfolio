@@ -28,7 +28,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
     <div className="@container">
       <div className="flex flex-col items-stretch justify-start rounded-xl border border-white/20 bg-white/40 p-4 shadow-lg backdrop-blur-lg transition-transform duration-300 hover:scale-[1.02] dark:bg-black/30 @xl:flex-row @xl:items-start @xl:p-6">
         <div
-          className="w-full shrink-0 rounded-lg bg-cover bg-center bg-no-repeat aspect-video @xl:w-80 @xl:aspect-square" {/* @xl:w-64 -> @xl:w-80 olarak değiştirildi */}
+          className="w-full shrink-0 rounded-lg bg-cover bg-center bg-no-repeat aspect-video @xl:w-80 @xl:aspect-square"
           style={{ backgroundImage: `url("${imageSrc}")` }}
           aria-label={imageAlt}
         ></div>
