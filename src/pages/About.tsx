@@ -45,8 +45,8 @@ const About: React.FC = () => {
             <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
               <Briefcase className="h-6 w-6" />
             </div>
-            <div>
-              <div className="flex items-baseline gap-2">
+            <div className="flex-1"> {/* flex-1 added to allow content to take available space */}
+              <div className="flex items-baseline justify-between gap-2"> {/* justify-between added here */}
                 <h4 className="font-bold">{section.title}</h4> {/* Position/Company */}
                 {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates/Location */}
               </div>
@@ -65,8 +65,8 @@ const About: React.FC = () => {
             <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
               <GraduationCap className="h-6 w-6" />
             </div>
-            <div>
-              <div className="flex items-baseline gap-2">
+            <div className="flex-1"> {/* flex-1 added to allow content to take available space */}
+              <div className="flex items-baseline justify-between gap-2"> {/* justify-between added here */}
                 <h4 className="font-bold">{section.title}</h4> {/* Department */}
                 {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates */}
               </div>
@@ -92,7 +92,7 @@ const About: React.FC = () => {
         );
       case 'language':
         return (
-          <div>
+          <div className="flex items-baseline justify-between gap-2"> {/* flex and justify-between added here */}
             <h4 className="font-bold">{section.title}</h4>
             {section.subtitle && <p className="text-sm text-stone-600 dark:text-stone-400">{section.subtitle}</p>}
           </div>
