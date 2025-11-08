@@ -48,7 +48,7 @@ const Blog: React.FC = () => {
     return (
       <Layout>
         <Header />
-        <main className="mx-auto flex max-w-5xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5 min-h-[60vh]">
+        <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5 min-h-[60vh]"> {/* max-w-5xl -> max-w-7xl olarak değiştirildi */}
           <p className="text-center">Loading blog posts...</p>
         </main>
         <Footer />
@@ -59,7 +59,7 @@ const Blog: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <main className="mx-auto flex max-w-5xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5">
+      <main className="mx-auto flex max-w-7xl flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5"> {/* max-w-5xl -> max-w-7xl olarak değiştirildi */}
         {/* PageHeading */}
         <div className="flex flex-wrap justify-between gap-3 p-4">
           <div className="flex min-w-72 flex-col gap-3">
