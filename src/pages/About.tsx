@@ -157,13 +157,7 @@ const About: React.FC = () => {
                 </h2>
               </div>
               {summarySection && renderSection(summarySection)}
-              <a
-                className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-bold text-white transition hover:opacity-90 sm:w-auto"
-                href="#" // Buraya CV dosyanızın linkini ekleyebilirsiniz
-              >
-                <Download className="h-5 w-5" />
-                Download CV
-              </a>
+              {/* Download CV bağlantısı kaldırıldı */}
             </div>
             <div className="flex flex-col gap-12 lg:col-span-2">
               {experienceSections.length > 0 && (
