@@ -17,7 +17,7 @@ const About: React.FC = () => {
               <img
                 className="aspect-square w-48 rounded-full object-cover shadow-lg lg:w-full lg:rounded-2xl"
                 alt="Professional headshot of Baran Demirtaş, smiling warmly."
-                src="/images/profile-placeholder.jpg" /* Yerel görsel yolu */
+                src="/images/baran.png" /* Yüklenen profil görseli */
               />
               <div className="flex flex-col gap-2">
                 <h1 className="text-4xl font-bold tracking-tight">Baran Demirtaş</h1>
