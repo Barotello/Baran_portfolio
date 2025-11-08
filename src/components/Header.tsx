@@ -68,19 +68,15 @@ const Header: React.FC = () => {
               </Button>
             ) : (
               <Button
-                variant="ghost"
-                size="icon"
-                className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10"
+                className="flex h-9 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90"
                 onClick={() => navigate('/login')}
                 aria-label="Login"
               >
-                <LogIn className="h-5 w-5" />
+                <LogIn className="h-5 w-5 mr-2" />
+                <span className="truncate">Login</span>
               </Button>
             )
           )}
-          <a className="hidden h-9 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90 sm:flex" href="mailto:barandemirtas2@gmail.com" target="_blank" rel="noopener noreferrer">
-            <span className="truncate">Get In Touch</span>
-          </a>
         </div>
       </nav>
     </header>
