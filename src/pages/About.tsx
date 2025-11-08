@@ -35,7 +35,7 @@ const About: React.FC = () => {
     switch (section.section_type) {
       case 'summary':
         return (
-          <p className="text-stone-600 dark:text-stone-400">
+          <p className="text-stone-600 dark:text-stone-400 text-justify"> {/* text-justify sınıfı eklendi */}
             {section.description}
           </p>
         );
