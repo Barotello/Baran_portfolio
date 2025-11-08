@@ -100,9 +100,11 @@ const About: React.FC = () => {
       case 'certificate':
         return (
           <div>
-            <h4 className="font-bold">{section.title}</h4>
+            <h4 className="font-bold">{section.title}</h4> {/* This could be a category like "Google Certifications" */}
             {section.details && section.details.length > 0 && (
-              <p className="text-sm text-stone-600 dark:text-stone-400">{section.details.join(", ")}</p>
+              <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
+                {section.details.map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
             )}
           </div>
         );

@@ -159,10 +159,10 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
                 <FormControl>
                   <Textarea placeholder="e.g., Middle East Technical University, Detailed summary for this section" rows={5} {...field} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         )}
 
         {selectedSectionType === 'education' && (
@@ -195,7 +195,7 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
                         ? "e.g., Charged with building..., Utilized various diagramming tools..."
                         : selectedSectionType === 'skill_category'
                         ? "e.g., Network Topology, Network Security, Cloud Services"
-                        : "e.g., Google UX Design (8 courses), Foundations: Data, Data, Everywhere."
+                        : "e.g., Google UX Design (8 courses), Foundations: Data, Data, Everywhere. (Each certificate on a new line or separated by commas)"
                     }
                     rows={5}
                     {...field}
