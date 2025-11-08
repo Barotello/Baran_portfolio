@@ -48,6 +48,30 @@ const ProjectDetails: React.FC = () => {
               className="h-full w-full object-cover"
               src={project.imageSrc}
             />
+            <div className="absolute bottom-4 right-4 flex gap-3">
+              {project.liveWebsiteLink && (
+                <a
+                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                  href={project.liveWebsiteLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Live Website"
+                >
+                  <Globe className="h-6 w-6" />
+                </a>
+              )}
+              {project.githubRepoLink && (
+                <a
+                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                  href={project.githubRepoLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub Repository"
+                >
+                  <Github className="h-6 w-6" />
+                </a>
+              )}
+            </div>
           </div>
         </section>
 
@@ -91,23 +115,6 @@ const ProjectDetails: React.FC = () => {
                     {tech}
                   </span>
                 ))}
-              </div>
-            </div>
-            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
-              <h4 className="text-xl font-bold tracking-tight mb-4">Project Links</h4>
-              <div className="flex flex-col gap-3">
-                {project.liveWebsiteLink && (
-                  <a className="flex items-center gap-2 text-primary transition hover:underline" href={project.liveWebsiteLink} target="_blank" rel="noopener noreferrer">
-                    <Globe className="h-5 w-5" />
-                    <span>Live Website</span>
-                  </a>
-                )}
-                {project.githubRepoLink && (
-                  <a className="flex items-center gap-2 text-primary transition hover:underline" href={project.githubRepoLink} target="_blank" rel="noopener noreferrer">
-                    <Github className="h-5 w-5" />
-                    <span>GitHub Repository</span>
-                  </a>
-                )}
               </div>
             </div>
           </aside>
