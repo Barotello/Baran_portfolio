@@ -11,10 +11,10 @@ const ContactSection: React.FC = () => {
         </p>
         <a className="mt-4 text-xl font-semibold text-primary transition hover:underline" href="mailto:barandemirtas2@gmail.com">barandemirtas2@gmail.com</a>
         <div className="mt-4 flex gap-4">
-          <a aria-label="LinkedIn" className="grid h-12 w-12 place-items-center rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 transition hover:bg-black/5 dark:hover:bg-white/10" href="#">
+          <a aria-label="LinkedIn" className="grid h-12 w-12 place-items-center rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 transition hover:bg-black/5 dark:hover:bg-white/10" href="https://www.linkedin.com/in/barandemirtas1" target="_blank" rel="noopener noreferrer">
             <Linkedin className="h-6 w-6" />
           </a>
-          <a aria-label="GitHub" className="grid h-12 w-12 place-items-center rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 transition hover:bg-black/5 dark:hover:bg-white/10" href="#">
+          <a aria-label="GitHub" className="grid h-12 w-12 place-items-center rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 transition hover:bg-black/5 dark:hover:bg-white/10" href="https://github.com/Barotello" target="_blank" rel="noopener noreferrer">
             <Github className="h-6 w-6" />
           </a>
         </div>
