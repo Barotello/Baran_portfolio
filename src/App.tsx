@@ -9,7 +9,9 @@ import NotFound from "./pages/NotFound";
 import ProjectDetails from "./pages/ProjectDetails";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
-import ProjectsPage from "./pages/ProjectsPage"; // Import the new ProjectsPage
+import ProjectsPage from "./pages/ProjectsPage";
+import Login from "./pages/Login"; // Import Login page
+import { SessionContextProvider } from "./integrations/supabase/auth"; // Import SessionContextProvider
 
 const queryClient = new QueryClient();
 
@@ -20,15 +22,18 @@ const App = () => (
       <Sonner />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/projects" element={<ProjectsPage />} /> {/* New route for Projects page */}
-            <Route path="/projects/:slug" element={<ProjectDetails />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <SessionContextProvider> {/* Wrap with SessionContextProvider */}
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:slug" element={<ProjectDetails />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/login" element={<Login />} /> {/* Add Login route */}
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </SessionContextProvider>
         </BrowserRouter>
       </ThemeProvider>
     </TooltipProvider>
