@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
-import { projects } from "@/data/projects";
+import { supabase } from "@/integrations/supabase/client";
+import { Project } from "@/data/projects";
+import { showError } from "@/utils/toast";
 
 const ProjectsPage: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        showError("Error fetching projects: " + error.message);
+      } else {
+        setProjects(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <Layout>
       <Header />
@@ -20,19 +43,25 @@ const ProjectsPage: React.FC = () => {
         </section>
 
         <section className="w-full py-8">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.slug}
-                imageSrc={project.imageSrc}
-                imageAlt={project.imageAlt}
-                title={project.title}
-                tags={project.tags}
-                description={project.description}
-                slug={project.slug}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <p className="text-center">Loading projects...</p>
+          ) : projects.length === 0 ? (
+            <p className="text-center text-gray-600 dark:text-gray-400">No projects to display yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {projects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  imageSrc={project.image_src}
+                  imageAlt={project.image_alt}
+                  title={project.title}
+                  tags={project.tags}
+                  description={project.description}
+                  slug={project.slug}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </main>
       <Footer />

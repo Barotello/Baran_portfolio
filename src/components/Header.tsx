@@ -4,7 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useSession } from "@/integrations/supabase/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, Settings } from "lucide-react"; // Settings icon eklendi
 import { showSuccess, showError } from "@/utils/toast";
 
 const Header: React.FC = () => {
@@ -52,6 +52,16 @@ const Header: React.FC = () => {
           >
             Journal
           </NavLink>
+          {!isLoading && session && ( // Sadece giriş yapmış kullanıcılar için Admin linki
+            <NavLink
+              className={({ isActive }) =>
+                `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+              }
+              to="/admin/projects"
+            >
+              Admin
+            </NavLink>
+          )}
         </div>
         <div className="flex items-center gap-2 pr-1">
           <ThemeToggle />

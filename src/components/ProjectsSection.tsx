@@ -1,21 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
-import { projects } from "@/data/projects"; // Import projects from the new data file
+import { supabase } from "@/integrations/supabase/client";
+import { Project } from "@/data/projects";
+import { showError } from "@/utils/toast";
 
 const ProjectsSection: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(4); // Sadece ilk 4 projeyi göster
+
+      if (error) {
+        showError("Error fetching projects: " + error.message);
+      } else {
+        setProjects(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="w-full py-16 lg:py-24" id="projects">
+        <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+        <p className="text-center">Loading projects...</p>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <section className="w-full py-16 lg:py-24" id="projects">
+        <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+        <p className="text-center text-gray-600 dark:text-gray-400">No projects to display yet.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="w-full py-16 lg:py-24" id="projects">
       <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {projects.map((project) => (
           <ProjectCard
-            key={project.slug} // Use slug as key
-            imageSrc={project.imageSrc}
-            imageAlt={project.imageAlt}
+            key={project.id}
+            imageSrc={project.image_src}
+            imageAlt={project.image_alt}
             title={project.title}
             tags={project.tags}
             description={project.description}
-            slug={project.slug} // Pass slug to ProjectCard
+            slug={project.slug}
           />
         ))}
       </div>

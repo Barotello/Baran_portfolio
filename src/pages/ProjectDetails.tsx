@@ -1,14 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Github, Globe, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { projects, Project } from "@/data/projects";
+import { supabase } from "@/integrations/supabase/client";
+import { Project } from "@/data/projects";
+import { showError } from "@/utils/toast";
 
 const ProjectDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const project = projects.find((p) => p.slug === slug);
+  const [project, setProject] = useState<Project | null>(null);
+  const [nextProject, setNextProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjectDetails = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('slug', slug)
+        .single();
+
+      if (error) {
+        showError("Error fetching project details: " + error.message);
+        setProject(null);
+      } else {
+        setProject(data);
+        if (data?.next_project_slug) {
+          const { data: nextProjectData, error: nextProjectError } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('slug', data.next_project_slug)
+            .single();
+          if (nextProjectError) {
+            console.error("Error fetching next project: ", nextProjectError.message);
+            setNextProject(null);
+          } else {
+            setNextProject(nextProjectData);
+          }
+        } else {
+          setNextProject(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchProjectDetails();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Header />
+        <main className="mx-auto flex max-w-4xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32 min-h-[60vh]">
+          <p>Loading project details...</p>
+        </main>
+        <Footer />
+      </Layout>
+    );
+  }
 
   if (!project) {
     return (
@@ -26,8 +78,6 @@ const ProjectDetails: React.FC = () => {
     );
   }
 
-  const nextProject = project.nextProjectSlug ? projects.find(p => p.slug === project.nextProjectSlug) : undefined;
-
   return (
     <Layout>
       <Header />
@@ -44,15 +94,15 @@ const ProjectDetails: React.FC = () => {
         <section className="w-full py-12">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl">
             <img
-              alt={project.imageAlt}
+              alt={project.image_alt}
               className="h-full w-full object-cover"
-              src={project.imageSrc}
+              src={project.image_src}
             />
             <div className="absolute bottom-4 right-4 flex gap-3">
-              {project.liveWebsiteLink && (
+              {project.live_website_link && (
                 <a
                   className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.liveWebsiteLink}
+                  href={project.live_website_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Live Website"
@@ -60,10 +110,10 @@ const ProjectDetails: React.FC = () => {
                   <Globe className="h-6 w-6" />
                 </a>
               )}
-              {project.githubRepoLink && (
+              {project.github_repo_link && (
                 <a
                   className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.githubRepoLink}
+                  href={project.github_repo_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub Repository"
@@ -102,7 +152,7 @@ const ProjectDetails: React.FC = () => {
             <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">My Role</h4>
               <ul className="flex flex-col gap-2 text-stone-600 dark:text-stone-300 text-sm">
-                {project.role.map((item, i) => (
+                {project.role?.map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
               </ul>
@@ -110,7 +160,7 @@ const ProjectDetails: React.FC = () => {
             <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">Technologies Used</h4>
               <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech, i) => (
+                {project.technologies?.map((tech, i) => (
                   <span key={i} className="rounded-full border border-primary/50 bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
                     {tech}
                   </span>
@@ -127,9 +177,9 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl">
               <img
-                alt={nextProject.imageAlt}
+                alt={nextProject.image_alt}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src={nextProject.imageSrc}
+                src={nextProject.image_src}
               />
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 md:p-8">
                 <h3 className="text-2xl font-bold text-white md:text-3xl">{nextProject.title}</h3>
