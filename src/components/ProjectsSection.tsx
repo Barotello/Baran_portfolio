@@ -31,7 +31,7 @@ const ProjectsSection: React.FC = () => {
     return (
       <section className="w-full py-16 lg:py-24" id="projects">
         <div className="mx-auto max-w-4xl px-4"> {/* İçerik için yeni sarmalayıcı */}
-          <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Selected Work</h2>
+          <h2 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Projects</h2>
           <p className="text-center">Loading projects...</p>
         </div>
       </section>
