@@ -4,7 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useSession } from "@/integrations/supabase/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, Settings } from "lucide-react";
+import { LogOut } from "lucide-react"; // LogIn kaldırıldı
 import { showSuccess, showError } from "@/utils/toast";
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ const Header: React.FC = () => {
       showError("Failed to log out: " + error.message);
     } else {
       showSuccess("Logged out successfully!");
-      navigate('/login');
+      navigate('/about#admin-login'); // Logout sonrası admin giriş bölümüne yönlendir
     }
   };
 
@@ -88,7 +88,7 @@ const Header: React.FC = () => {
           <ThemeToggle />
           {!isLoading && (
             session ? (
-              <div className="md:hidden">
+              <div className="md:hidden"> {/* Mobil görünümde oturum açmış kullanıcılar için logout butonu */}
                 <Button
                   variant="ghost"
                   size="icon"
@@ -100,14 +100,13 @@ const Header: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <Button
+              <Link // Oturum açmamış kullanıcılar için 'Get Contact' butonu
+                to="/#contact"
                 className="flex h-9 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90"
-                onClick={() => navigate('/login')}
-                aria-label="Login"
+                aria-label="Get Contact"
               >
-                <LogIn className="h-5 w-5 mr-2" />
-                <span className="truncate">Login</span>
-              </Button>
+                <span className="truncate">Get Contact</span>
+              </Link>
             )
           )}
         </div>

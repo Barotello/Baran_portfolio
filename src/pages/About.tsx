@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { AboutSection } from "@/data/about";
 import { showError } from "@/utils/toast";
+import AboutLoginSection from "@/components/AboutLoginSection"; // Yeni bileşeni import ediyoruz
 
 const About: React.FC = () => {
   const [aboutSections, setAboutSections] = useState<AboutSection[]>([]);
@@ -140,7 +141,7 @@ const About: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <main className="mx-auto flex max-w-6xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32">
+      <main className="mx-auto max-w-6xl flex-col items-center px-4 pt-16 sm:pt-24 lg:pt-32">
         <section className="w-full" id="about-me">
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
             <div className="sticky top-32 flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
@@ -231,6 +232,9 @@ const About: React.FC = () => {
               )}
             </div>
           </div>
+        </section>
+        <section className="w-full py-16 lg:py-24">
+          <AboutLoginSection /> {/* Giriş bölümünü buraya ekliyoruz */}
         </section>
       </main>
       <Footer />
