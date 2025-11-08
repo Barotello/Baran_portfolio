@@ -26,12 +26,14 @@ const aboutSectionFormSchema = z.object({
   section_type: z.enum(['summary', 'experience', 'education', 'skill_category', 'language', 'certificate'], {
     required_error: "Section type is required.",
   }),
-  title: z.string().min(1, { message: "Title is required." }),
+  title: z.string().optional(), // Made optional, as it's not the primary title for 'experience'
+  job_title: z.string().optional(), // New field
+  company_name: z.string().optional(), // New field
   subtitle: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
-  details: z.string().optional().or(z.literal("")), // Comma-separated string for array conversion
+  details: z.string().optional().or(z.literal("")),
   display_order: z.coerce.number().min(0, { message: "Display order must be a non-negative number." }),
-  gpa: z.string().optional().or(z.literal("")), // GPA is optional by default
+  gpa: z.string().optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
   if (data.section_type === 'education' && !data.gpa) {
     ctx.addIssue({
@@ -39,6 +41,31 @@ const aboutSectionFormSchema = z.object({
       message: "GPA is required for education sections.",
       path: ['gpa'],
     });
+  }
+  if (data.section_type === 'experience') {
+    if (!data.job_title) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Job Title is required for experience sections.",
+        path: ['job_title'],
+      });
+    }
+    if (!data.company_name) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Company Name is required for experience sections.",
+        path: ['company_name'],
+      });
+    }
+  } else {
+    // For non-experience sections, 'title' is required
+    if (!data.title) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Title is required for this section type.",
+        path: ['title'],
+      });
+    }
   }
 });
 
@@ -60,11 +87,13 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
     defaultValues: {
       section_type: initialData?.section_type || 'summary',
       title: initialData?.title || "",
+      job_title: initialData?.job_title || "", // Initialize new field
+      company_name: initialData?.company_name || "", // Initialize new field
       subtitle: initialData?.subtitle || "",
       description: initialData?.description || "",
-      details: initialData?.details?.join("\n") || "", // Join with newline for editing
+      details: initialData?.details?.join("\n") || "",
       display_order: initialData?.display_order || 0,
-      gpa: initialData?.gpa || "", // Set default value for GPA
+      gpa: initialData?.gpa || "",
     },
   });
 
@@ -74,10 +103,8 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
     let formattedDetails: string[] = [];
     if (values.details) {
       if (values.section_type === 'experience' || values.section_type === 'certificate') {
-        // Split by newline for experience and certificate
         formattedDetails = values.details.split('\n').map((s) => s.trim()).filter(Boolean);
       } else if (values.section_type === 'skill_category') {
-        // Keep splitting by comma for skill_category
         formattedDetails = values.details.split(',').map((s) => s.trim()).filter(Boolean);
       }
     }
@@ -85,6 +112,8 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
     const formattedData: AboutSection = {
       ...values,
       details: formattedDetails,
+      // Ensure title is null/undefined for experience if job_title/company_name are used
+      title: selectedSectionType === 'experience' ? undefined : values.title,
     };
     onSubmit(formattedData);
   };
@@ -130,19 +159,51 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title (e.g., Department, Company, Skill Category)</FormLabel>
-              <FormControl>
-                <Input placeholder="e.g., System & Network Engineer, ASELSAN, METU" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
+        {selectedSectionType === 'experience' ? (
+          <>
+            <FormField
+              control={form.control}
+              name="job_title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Senior Software Engineer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="company_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Google, Microsoft" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        ) : (
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title (e.g., Department, Skill Category, Language, Certificate Name)</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Computer Science, Web Development, English, Google UX Design" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {(selectedSectionType === 'experience' || selectedSectionType === 'education' || selectedSectionType === 'language') && (
           <FormField

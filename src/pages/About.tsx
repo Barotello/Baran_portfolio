@@ -45,12 +45,12 @@ const About: React.FC = () => {
             <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
               <Briefcase className="h-6 w-6" />
             </div>
-            <div className="flex-1"> {/* flex-1 added to allow content to take available space */}
-              <div className="flex items-baseline justify-between gap-2"> {/* justify-between added here */}
-                <h4 className="font-bold">{section.title}</h4> {/* Position/Company */}
-                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates/Location */}
+            <div className="flex-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <h4 className="font-bold">{section.job_title}</h4> {/* Using job_title */}
+                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
               </div>
-              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>} {/* Company/Location */}
+              {section.company_name && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.company_name}</p>} {/* Using company_name */}
               {section.details && section.details.length > 0 && (
                 <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
                   {section.details.map((item, i) => <li key={i}>{item}</li>)}
@@ -65,13 +65,13 @@ const About: React.FC = () => {
             <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
               <GraduationCap className="h-6 w-6" />
             </div>
-            <div className="flex-1"> {/* flex-1 added to allow content to take available space */}
-              <div className="flex items-baseline justify-between gap-2"> {/* justify-between added here */}
-                <h4 className="font-bold">{section.title}</h4> {/* Department */}
-                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates */}
+            <div className="flex-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <h4 className="font-bold">{section.title}</h4>
+                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
               </div>
-              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>} {/* University */}
-              {section.gpa && <p className="text-sm text-stone-600 dark:text-stone-400">GPA: {section.gpa}</p>} {/* GPA */}
+              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>}
+              {section.gpa && <p className="text-sm text-stone-600 dark:text-stone-400">GPA: {section.gpa}</p>}
             </div>
           </div>
         );
@@ -92,7 +92,7 @@ const About: React.FC = () => {
         );
       case 'language':
         return (
-          <div className="flex items-baseline justify-between gap-2"> {/* flex and justify-between added here */}
+          <div className="flex items-baseline justify-between gap-2">
             <h4 className="font-bold">{section.title}</h4>
             {section.subtitle && <p className="text-sm text-stone-600 dark:text-stone-400">{section.subtitle}</p>}
           </div>
@@ -100,7 +100,7 @@ const About: React.FC = () => {
       case 'certificate':
         return (
           <div>
-            <h4 className="font-bold">{section.title}</h4> {/* This could be a category like "Google Certifications" */}
+            <h4 className="font-bold">{section.title}</h4>
             {section.details && section.details.length > 0 && (
               <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
                 {section.details.map((item, i) => <li key={i}>{item}</li>)}
