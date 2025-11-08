@@ -31,6 +31,15 @@ const aboutSectionFormSchema = z.object({
   description: z.string().optional().or(z.literal("")),
   details: z.string().optional().or(z.literal("")), // Comma-separated string for array conversion
   display_order: z.coerce.number().min(0, { message: "Display order must be a non-negative number." }),
+  gpa: z.string().optional().or(z.literal("")), // GPA is optional by default
+}).superRefine((data, ctx) => {
+  if (data.section_type === 'education' && !data.gpa) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "GPA is required for education sections.",
+      path: ['gpa'],
+    });
+  }
 });
 
 interface AboutSectionFormProps {
@@ -55,6 +64,7 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
       description: initialData?.description || "",
       details: initialData?.details?.join(", ") || "",
       display_order: initialData?.display_order || 0,
+      gpa: initialData?.gpa || "", // Set default value for GPA
     },
   });
 
@@ -114,7 +124,7 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Title (e.g., Department, Company, Skill Category)</FormLabel>
               <FormControl>
                 <Input placeholder="e.g., System & Network Engineer, ASELSAN, METU" {...field} />
               </FormControl>
@@ -145,9 +155,25 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Description (e.g., University Name, Summary Text)</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Detailed description for this section" rows={5} {...field} />
+                  <Textarea placeholder="e.g., Middle East Technical University, Detailed summary for this section" rows={5} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        {selectedSectionType === 'education' && (
+          <FormField
+            control={form.control}
+            name="gpa"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>GPA</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., 3.63" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

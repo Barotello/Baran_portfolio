@@ -47,10 +47,10 @@ const About: React.FC = () => {
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <h4 className="font-bold">{section.title}</h4>
-                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
+                <h4 className="font-bold">{section.title}</h4> {/* Position/Company */}
+                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates/Location */}
               </div>
-              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>}
+              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>} {/* Company/Location */}
               {section.details && section.details.length > 0 && (
                 <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
                   {section.details.map((item, i) => <li key={i}>{item}</li>)}
@@ -67,15 +67,11 @@ const About: React.FC = () => {
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <h4 className="font-bold">{section.title}</h4>
-                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
+                <h4 className="font-bold">{section.title}</h4> {/* Department */}
+                {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>} {/* Dates */}
               </div>
-              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>}
-              {section.details && section.details.length > 0 && (
-                <p className="mt-2 text-stone-600 dark:text-stone-400">
-                  {section.details.join(", ")}
-                </p>
-              )}
+              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>} {/* University */}
+              {section.gpa && <p className="text-sm text-stone-600 dark:text-stone-400">GPA: {section.gpa}</p>} {/* GPA */}
             </div>
           </div>
         );
