@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
           Product Designer &amp; Developer
         </p>
         <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl">
-          Crafting intuitive digital experiences where clean design meets robust development.
+          architect intuitive digital experiences by fusing clean design principles with rock-solid, AI-accelerated development. Leveraging React Native, TypeScript, and Supabase, I engineer full-stack mobile solutions
         </h2>
       </div>
       <a className="flex h-12 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-6 text-base font-bold text-white transition hover:opacity-90" href="#projects">
