@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,20 +6,55 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import BlogPostCard from "@/components/BlogPostCard";
-import { blogPosts } from "@/data/blogPosts";
+import { BlogPost } from "@/data/blogPosts";
+import { supabase } from "@/integrations/supabase/client";
+import { showError } from "@/utils/toast";
 
 const Blog: React.FC = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [activeCategory, setActiveCategory] = React.useState("All");
+  const [allBlogPosts, setAllBlogPosts] = useState<BlogPost[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
 
-  const categories = ["All", "UI/UX", "Development", "Case Studies"];
+  const categories = ["All", "UI/UX", "Development", "Case Study"]; // Updated to match potential categories from DB
 
-  const filteredPosts = blogPosts.filter(post => {
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('date', { ascending: false }); // Order by date
+
+      if (error) {
+        showError("Error fetching blog posts: " + error.message);
+      } else {
+        setAllBlogPosts(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchBlogPosts();
+  }, []);
+
+  const filteredPosts = allBlogPosts.filter(post => {
     const matchesCategory = activeCategory === "All" || post.category === activeCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <Layout>
+        <Header />
+        <main className="mx-auto flex max-w-[960px] flex-1 flex-col gap-8 px-4 sm:px-8 md:px-20 lg:px-40 py-5 min-h-[60vh]">
+          <p className="text-center">Loading blog posts...</p>
+        </main>
+        <Footer />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -72,14 +107,14 @@ const Blog: React.FC = () => {
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <BlogPostCard
-                key={post.slug}
+                key={post.id} // Use post.id for key
                 slug={post.slug}
                 category={post.category}
                 title={post.title}
                 description={post.description}
                 date={post.date}
-                imageSrc={post.imageSrc}
-                imageAlt={post.imageAlt}
+                imageSrc={post.image_src}
+                imageAlt={post.image_alt}
               />
             ))
           ) : (
@@ -87,12 +122,12 @@ const Blog: React.FC = () => {
           )}
         </div>
 
-        {/* Pagination */}
+        {/* Pagination (Placeholder for now, can be implemented later) */}
         <div className="flex items-center justify-center gap-4 p-4">
           <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-white/20 bg-white/40 text-gray-600 backdrop-blur-md hover:bg-white/60 dark:bg-black/30 dark:text-gray-400 dark:hover:bg-black/50">
             <ChevronLeft className="h-5 w-5" />
           </Button>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Page 1 of 5</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Page 1 of 1</span> {/* Updated to reflect no pagination yet */}
           <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-white/20 bg-white/40 text-gray-600 backdrop-blur-md hover:bg-white/60 dark:bg-black/30 dark:text-gray-400 dark:hover:bg-black/50">
             <ChevronRight className="h-5 w-5" />
           </Button>

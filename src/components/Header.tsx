@@ -4,8 +4,15 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useSession } from "@/integrations/supabase/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, Settings } from "lucide-react"; // Settings icon eklendi
+import { LogIn, LogOut, Settings } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"; // DropdownMenu bileşenlerini import ediyoruz
 
 const Header: React.FC = () => {
   const { session, isLoading } = useSession();
@@ -52,30 +59,43 @@ const Header: React.FC = () => {
           >
             Journal
           </NavLink>
-          {!isLoading && session && ( // Sadece giriş yapmış kullanıcılar için Admin linki
-            <NavLink
-              className={({ isActive }) =>
-                `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
-              }
-              to="/admin/projects"
-            >
-              Admin
-            </NavLink>
+          {!isLoading && session && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="uppercase text-sm font-medium hover:text-primary">
+                  Admin
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate('/admin/projects')}>
+                  Manage Projects
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/admin/blog')}>
+                  Manage Blog Posts
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
         <div className="flex items-center gap-2 pr-1">
           <ThemeToggle />
           {!isLoading && (
             session ? (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10"
-                onClick={handleLogout}
-                aria-label="Logout"
-              >
-                <LogOut className="h-5 w-5" />
-              </Button>
+              <div className="md:hidden"> {/* Mobil görünümde sadece logout butonu */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="grid h-9 w-9 place-items-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10"
+                  onClick={handleLogout}
+                  aria-label="Logout"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </div>
             ) : (
               <Button
                 className="flex h-9 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90"

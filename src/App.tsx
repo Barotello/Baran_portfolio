@@ -12,6 +12,8 @@ import Blog from "./pages/Blog";
 import ProjectsPage from "./pages/ProjectsPage";
 import Login from "./pages/Login";
 import ManageProjects from "./pages/Admin/ManageProjects";
+import ManageBlogPosts from "./pages/Admin/ManageBlogPosts"; // Import ManageBlogPosts page
+import BlogPostDetails from "./pages/BlogPostDetails"; // Import BlogPostDetails page
 import { SessionContextProvider } from "./integrations/supabase/auth";
 
 const queryClient = new QueryClient();
@@ -30,8 +32,10 @@ const App = () => (
               <Route path="/projects/:slug" element={<ProjectDetails />} />
               <Route path="/about" element={<About />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPostDetails />} /> {/* Add BlogPostDetails route */}
               <Route path="/login" element={<Login />} />
               <Route path="/admin/projects" element={<ManageProjects />} />
+              <Route path="/admin/blog" element={<ManageBlogPosts />} /> {/* Add ManageBlogPosts route */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
