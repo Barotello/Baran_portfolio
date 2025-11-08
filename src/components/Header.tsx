@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         <div className="hidden items-center gap-6 text-sm font-medium md:flex">
           <NavLink
             className={({ isActive }) =>
-              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+              `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
             }
             to="/projects"
           >
@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+              `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
             }
             to="/about"
           >
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              `transition ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
+              `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
             }
             to="/blog"
           >
