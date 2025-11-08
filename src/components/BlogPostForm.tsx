@@ -21,7 +21,7 @@ const blogPostFormSchema = z.object({
   title: z.string().min(1, { message: "Title is required." }),
   description: z.string().min(1, { message: "Short Description is required." }),
   date: z.string().min(1, { message: "Date is required (e.g., 'October 26, 2023')." }),
-  image_src: z.string().url({ message: "Image Source must be a valid URL." }),
+  image_src: z.string().min(1, { message: "Image Source is required." }), // URL doğrulaması kaldırıldı
   image_alt: z.string().min(1, { message: "Image Alt Text is required." }),
   content: z.string().min(1, { message: "Content is required." }),
 });
@@ -117,9 +117,9 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({
           name="image_src"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image Source URL</FormLabel>
+              <FormLabel>Image Source URL or Local Path</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.jpg" {...field} />
+                <Input placeholder="https://example.com/image.jpg or /images/my-image.jpg" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

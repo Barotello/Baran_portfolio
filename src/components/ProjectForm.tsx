@@ -17,7 +17,7 @@ import { Project } from "@/data/projects";
 
 const projectFormSchema = z.object({
   slug: z.string().min(1, { message: "Slug is required." }),
-  image_src: z.string().url({ message: "Image Source must be a valid URL." }),
+  image_src: z.string().min(1, { message: "Image Source is required." }), // URL doğrulaması kaldırıldı
   image_alt: z.string().min(1, { message: "Image Alt Text is required." }),
   title: z.string().min(1, { message: "Title is required." }),
   description: z.string().min(1, { message: "Description is required." }),
@@ -27,8 +27,8 @@ const projectFormSchema = z.object({
   solution: z.string().min(1, { message: "Solution description is required." }),
   role: z.string().min(1, { message: "Role is required (comma-separated)." }),
   technologies: z.string().min(1, { message: "Technologies are required (comma-separated)." }),
-  live_website_link: z.string().url({ message: "Live Website Link must be a valid URL." }).optional().or(z.literal("")),
-  github_repo_link: z.string().url({ message: "GitHub Repo Link must be a valid URL." }).optional().or(z.literal("")),
+  live_website_link: z.string().optional().or(z.literal("")), // URL doğrulaması kaldırıldı
+  github_repo_link: z.string().optional().or(z.literal("")), // URL doğrulaması kaldırıldı
   next_project_slug: z.string().optional().or(z.literal("")),
 });
 
@@ -108,9 +108,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           name="image_src"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image Source URL</FormLabel>
+              <FormLabel>Image Source URL or Local Path</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.jpg" {...field} />
+                <Input placeholder="https://example.com/image.jpg or /images/my-image.jpg" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -227,7 +227,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <FormItem>
               <FormLabel>Live Website Link (Optional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://live-site.com" {...field} />
+                <Input placeholder="https://live-site.com or /images/live-site-screenshot.jpg" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -240,7 +240,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <FormItem>
               <FormLabel>GitHub Repo Link (Optional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://github.com/user/repo" {...field} />
+                <Input placeholder="https://github.com/user/repo or /images/github-screenshot.jpg" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
