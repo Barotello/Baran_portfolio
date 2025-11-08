@@ -62,7 +62,7 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
       title: initialData?.title || "",
       subtitle: initialData?.subtitle || "",
       description: initialData?.description || "",
-      details: initialData?.details?.join(", ") || "",
+      details: initialData?.details?.join("\n") || "", // Join with newline for editing
       display_order: initialData?.display_order || 0,
       gpa: initialData?.gpa || "", // Set default value for GPA
     },
@@ -71,9 +71,20 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
   const selectedSectionType = form.watch("section_type");
 
   const handleSubmit = (values: z.infer<typeof aboutSectionFormSchema>) => {
+    let formattedDetails: string[] = [];
+    if (values.details) {
+      if (values.section_type === 'experience' || values.section_type === 'certificate') {
+        // Split by newline for experience and certificate
+        formattedDetails = values.details.split('\n').map((s) => s.trim()).filter(Boolean);
+      } else if (values.section_type === 'skill_category') {
+        // Keep splitting by comma for skill_category
+        formattedDetails = values.details.split(',').map((s) => s.trim()).filter(Boolean);
+      }
+    }
+
     const formattedData: AboutSection = {
       ...values,
-      details: values.details ? values.details.split(",").map((s) => s.trim()).filter(Boolean) : [],
+      details: formattedDetails,
     };
     onSubmit(formattedData);
   };
@@ -187,15 +198,17 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
             name="details"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Details (Comma-separated list)</FormLabel>
+                <FormLabel>Details (Each item on a new line for Experience/Certificates, comma-separated for Skills)</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder={
                       selectedSectionType === 'experience'
-                        ? "e.g., Charged with building..., Utilized various diagramming tools..."
+                        ? "Enter each responsibility or achievement on a new line.\nExample: Charged with building complex systems, ensuring high availability.\nExample: Utilized various diagramming tools, like Lucidchart."
                         : selectedSectionType === 'skill_category'
                         ? "e.g., Network Topology, Network Security, Cloud Services"
-                        : "e.g., Google UX Design (8 courses), Foundations: Data, Data, Everywhere. (Each certificate on a new line or separated by commas)"
+                        : selectedSectionType === 'certificate'
+                        ? "Enter each certificate on a new line.\nExample: Google UX Design (8 courses)\nExample: Foundations: Data, Data, Everywhere."
+                        : ""
                     }
                     rows={5}
                     {...field}
