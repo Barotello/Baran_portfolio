@@ -3,6 +3,7 @@ import ProjectCard from "./ProjectCard";
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/data/projects";
 import { showError } from "@/utils/toast";
+import { Link } from "react-router-dom"; // Link bileşenini import ediyoruz
 
 const ProjectsSection: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -65,6 +66,11 @@ const ProjectsSection: React.FC = () => {
               slug={project.slug}
             />
           ))}
+        </div>
+        <div className="mt-12 text-center">
+          <Link to="/projects" className="flex h-11 min-w-[84px] max-w-[480px] mx-auto cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-6 text-base font-bold text-white transition hover:opacity-90">
+            <span className="truncate">View All Projects</span>
+          </Link>
         </div>
       </div>
     </section>

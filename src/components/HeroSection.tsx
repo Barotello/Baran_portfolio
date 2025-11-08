@@ -15,9 +15,7 @@ const HeroSection: React.FC = () => {
             Architect intuitive digital experiences by fusing clean design principles with rock-solid, AI-accelerated development. Leveraging React Native, TypeScript, and Supabase
           </h2>
         </div>
-        <a className="flex h-12 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-6 text-base font-bold text-white transition hover:opacity-90" href="#projects">
-          <span className="truncate">See My Projects</span>
-        </a>
+        {/* "See My Projects" butonu buradan kaldırıldı */}
       </div>
     </section>
   );
