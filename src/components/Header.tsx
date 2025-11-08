@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"; // DropdownMenu bileşenlerini import ediyoruz
+} from "@/components/ui/dropdown-menu";
 
 const Header: React.FC = () => {
   const { session, isLoading } = useSession();
@@ -29,7 +29,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-4 z-50 mx-auto max-w-5xl px-4"> {/* max-w-4xl -> max-w-5xl olarak değiştirildi */}
+    <header className="sticky top-4 z-50 mx-auto max-w-5xl px-4">
       <nav className="flex items-center justify-between rounded-full border border-glass-border-light dark:border-glass-border-dark bg-glass-light dark:bg-glass-dark p-2.5 shadow-lg backdrop-blur-xl">
         <Link className="flex items-center gap-2 pl-3" to="/">
           <span className="font-bold text-lg">BD</span>
@@ -73,6 +73,9 @@ const Header: React.FC = () => {
                 <DropdownMenuItem onClick={() => navigate('/admin/blog')}>
                   Manage Blog Posts
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/admin/about')}>
+                  Manage About Me
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" /> Logout
@@ -85,7 +88,7 @@ const Header: React.FC = () => {
           <ThemeToggle />
           {!isLoading && (
             session ? (
-              <div className="md:hidden"> {/* Mobil görünümde sadece logout butonu */}
+              <div className="md:hidden">
                 <Button
                   variant="ghost"
                   size="icon"

@@ -12,8 +12,9 @@ import Blog from "./pages/Blog";
 import ProjectsPage from "./pages/ProjectsPage";
 import Login from "./pages/Login";
 import ManageProjects from "./pages/Admin/ManageProjects";
-import ManageBlogPosts from "./pages/Admin/ManageBlogPosts"; // Import ManageBlogPosts page
-import BlogPostDetails from "./pages/BlogPostDetails"; // Import BlogPostDetails page
+import ManageBlogPosts from "./pages/Admin/ManageBlogPosts";
+import ManageAbout from "./pages/Admin/ManageAbout"; // Import ManageAbout page
+import BlogPostDetails from "./pages/BlogPostDetails";
 import { SessionContextProvider } from "./integrations/supabase/auth";
 
 const queryClient = new QueryClient();
@@ -32,10 +33,11 @@ const App = () => (
               <Route path="/projects/:slug" element={<ProjectDetails />} />
               <Route path="/about" element={<About />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPostDetails />} /> {/* Add BlogPostDetails route */}
+              <Route path="/blog/:slug" element={<BlogPostDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin/projects" element={<ManageProjects />} />
-              <Route path="/admin/blog" element={<ManageBlogPosts />} /> {/* Add ManageBlogPosts route */}
+              <Route path="/admin/blog" element={<ManageBlogPosts />} />
+              <Route path="/admin/about" element={<ManageAbout />} /> {/* Add ManageAbout route */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
