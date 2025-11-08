@@ -25,14 +25,14 @@ import { AboutSection } from "@/data/about";
 const aboutSectionFormSchema = z.object({
   section_type: z.enum(['summary', 'experience', 'education', 'skill_category', 'language', 'certificate'], {
     required_error: "Section type is required.",
-  }),
-  title: z.string().optional(), // Made optional, as it's not the primary title for 'experience'
-  job_title: z.string().optional(), // New field
-  company_name: z.string().optional(), // New field
+  }).default('summary'), // Added .default('summary') to ensure it's always present and inferred as required
+  title: z.string().optional().or(z.literal("")), // Made optional, as it's not the primary title for 'experience'
+  job_title: z.string().optional().or(z.literal("")), // New field
+  company_name: z.string().optional().or(z.literal("")), // New field
   subtitle: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
   details: z.string().optional().or(z.literal("")),
-  display_order: z.coerce.number().min(0, { message: "Display order must be a non-negative number." }),
+  display_order: z.coerce.number().min(0, { message: "Display order must be a non-negative number." }).default(0),
   gpa: z.string().optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
   if (data.section_type === 'education' && !data.gpa) {
