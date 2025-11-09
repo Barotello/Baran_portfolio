@@ -2,7 +2,7 @@ export interface AboutSection {
   id?: string;
   user_id?: string;
   section_type: 'summary' | 'experience' | 'education' | 'skill_category' | 'language' | 'certificate';
-  title: string; // For department, skill category title, language name, certificate name (not used for experience's main title anymore)
+  title?: string; // Changed to optional
   job_title?: string; // New: For experience section's position
   company_name?: string; // New: For experience section's company name
   subtitle?: string; // For dates, location, or language proficiency

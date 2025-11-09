@@ -16,14 +16,14 @@ import {
 import { BlogPost } from "@/data/blogPosts";
 
 const blogPostFormSchema = z.object({
-  slug: z.string().nonempty({ message: "Slug is required." }),
-  category: z.string().nonempty({ message: "Category is required." }),
-  title: z.string().nonempty({ message: "Title is required." }),
-  description: z.string().nonempty({ message: "Short Description is required." }),
-  date: z.string().nonempty({ message: "Date is required (e.g., 'October 26, 2023')." }),
-  image_src: z.string().nonempty({ message: "Image Source is required." }),
-  image_alt: z.string().nonempty({ message: "Image Alt Text is required." }),
-  content: z.string().nonempty({ message: "Content is required." }),
+  slug: z.string().min(1, { message: "Slug is required." }),
+  category: z.string().min(1, { message: "Category is required." }),
+  title: z.string().min(1, { message: "Title is required." }),
+  description: z.string().min(1, { message: "Short Description is required." }),
+  date: z.string().min(1, { message: "Date is required (e.g., 'October 26, 2023')." }),
+  image_src: z.string().min(1, { message: "Image Source is required." }),
+  image_alt: z.string().min(1, { message: "Image Alt Text is required." }),
+  content: z.string().min(1, { message: "Content is required." }),
 });
 
 interface BlogPostFormProps {

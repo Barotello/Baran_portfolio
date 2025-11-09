@@ -25,17 +25,17 @@ import { AboutSection } from "@/data/about";
 const aboutSectionFormSchema = z.object({
   section_type: z.enum(['summary', 'experience', 'education', 'skill_category', 'language', 'certificate'], {
     required_error: "Section type is required.",
-  }).default('summary'), // Added .default('summary') to ensure it's always present and inferred as required
-  title: z.string().optional().or(z.literal("")), // Made optional, as it's not the primary title for 'experience'
-  job_title: z.string().optional().or(z.literal("")), // New field
-  company_name: z.string().optional().or(z.literal("")), // New field
+  }), // Removed .default('summary')
+  title: z.string().optional().or(z.literal("")), // Now optional in schema, validation handled by superRefine
+  job_title: z.string().optional().or(z.literal("")),
+  company_name: z.string().optional().or(z.literal("")),
   subtitle: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
   details: z.string().optional().or(z.literal("")),
   display_order: z.coerce.number().min(0, { message: "Display order must be a non-negative number." }).default(0),
   gpa: z.string().optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
-  if (data.section_type === 'education' && !data.gpa) {
+  if (data.section_type === 'education' && (!data.gpa || data.gpa.trim() === "")) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: "GPA is required for education sections.",
@@ -43,14 +43,14 @@ const aboutSectionFormSchema = z.object({
     });
   }
   if (data.section_type === 'experience') {
-    if (!data.job_title) {
+    if (!data.job_title || data.job_title.trim() === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Job Title is required for experience sections.",
         path: ['job_title'],
       });
     }
-    if (!data.company_name) {
+    if (!data.company_name || data.company_name.trim() === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Company Name is required for experience sections.",
@@ -59,7 +59,7 @@ const aboutSectionFormSchema = z.object({
     }
   } else {
     // For non-experience sections, 'title' is required
-    if (!data.title) {
+    if (!data.title || data.title.trim() === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Title is required for this section type.",
@@ -116,8 +116,6 @@ const AboutSectionForm: React.FC<AboutSectionFormProps> = ({
     const formattedData: AboutSection = {
       ...values,
       details: formattedDetails,
-      // Ensure title is null/undefined for experience if job_title/company_name are used
-      title: selectedSectionType === 'experience' ? undefined : values.title,
     };
     onSubmit(formattedData);
   };
