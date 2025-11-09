@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Briefcase, GraduationCap, Download, Award } from "lucide-react"; // Award ikonunu import ediyoruz
+import { Briefcase, GraduationCap, Download, Award } from "lucide-react";
 import Layout from "@/components/Layout";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { AboutSection } from "@/data/about";
 import { showError } from "@/utils/toast";
-import AboutLoginSection from "@/components/AboutLoginSection"; // Yeni bileşeni import ediyoruz
+import AboutLoginSection from "@/components/AboutLoginSection";
+import { useSession } from "@/integrations/supabase/auth"; // useSession'ı import ediyoruz
+
+interface Profile {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+}
 
 const About: React.FC = () => {
+  const { user } = useSession(); // Mevcut kullanıcıyı alıyoruz
   const [aboutSections, setAboutSections] = useState<AboutSection[]>([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,14 +39,34 @@ const About: React.FC = () => {
       setLoading(false);
     };
 
+    const fetchProfileData = async () => {
+      if (user?.id) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, first_name, last_name, avatar_url')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching profile for About page:", error.message);
+          setProfile(null);
+        } else {
+          setProfile(data);
+        }
+      } else {
+        setProfile(null); // No user, no profile
+      }
+    };
+
     fetchAboutContent();
-  }, []);
+    fetchProfileData();
+  }, [user]); // user değiştiğinde tekrar fetch et
 
   const renderSection = (section: AboutSection) => {
     switch (section.section_type) {
       case 'summary':
         return (
-          <p className="text-stone-600 dark:text-stone-400 text-justify"> {/* text-justify sınıfı eklendi */}
+          <p className="text-stone-600 dark:text-stone-400 text-justify">
             {section.description}
           </p>
         );
@@ -48,10 +78,10 @@ const About: React.FC = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-baseline justify-between gap-2">
-                <h4 className="font-bold">{section.job_title}</h4> {/* Using job_title */}
+                <h4 className="font-bold">{section.job_title}</h4>
                 {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
               </div>
-              {section.company_name && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.company_name}</p>} {/* Using company_name */}
+              {section.company_name && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.company_name}</p>}
               {section.details && section.details.length > 0 && (
                 <ul className="mt-2 list-disc pl-5 text-stone-600 dark:text-stone-400 text-sm space-y-1">
                   {section.details.map((item, i) => <li key={i}>{item}</li>)}
@@ -102,7 +132,7 @@ const About: React.FC = () => {
         return (
           <div className="flex gap-6">
             <div className="mt-1 grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-white/10 text-primary">
-              <Award className="h-6 w-6" /> {/* Award ikonunu buraya ekliyoruz */}
+              <Award className="h-6 w-6" />
             </div>
             <div className="flex-1">
               <h4 className="font-bold">{section.title}</h4>
@@ -138,6 +168,8 @@ const About: React.FC = () => {
   const languageSections = aboutSections.filter(s => s.section_type === 'language');
   const certificateSections = aboutSections.filter(s => s.section_type === 'certificate');
 
+  const profileImageSrc = profile?.avatar_url || "/images/profile-placeholder.jpg"; // Use placeholder if no avatar
+
   return (
     <Layout>
       <Header />
@@ -147,17 +179,16 @@ const About: React.FC = () => {
             <div className="sticky top-32 flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
               <img
                 className="aspect-square w-48 rounded-full object-cover shadow-lg lg:w-full lg:rounded-2xl"
-                alt="Professional headshot of Baran Demirtaş, smiling warmly."
-                src="/images/baran.png"
+                alt="Professional headshot of Baran Demirtaş"
+                src={profileImageSrc} // Dinamik avatar URL'sini kullanıyoruz
               />
               <div className="flex flex-col gap-2">
-                <h1 className="text-4xl font-bold tracking-tight">Baran Demirtaş</h1>
+                <h1 className="text-4xl font-bold tracking-tight">{profile?.first_name} {profile?.last_name}</h1>
                 <h2 className="text-xl font-display font-medium text-stone-600 dark:text-stone-300">
                   {summarySection?.title || "System & Network Engineer"}
                 </h2>
               </div>
               {summarySection && renderSection(summarySection)}
-              {/* Download CV bağlantısı kaldırıldı */}
             </div>
             <div className="flex flex-col gap-12 lg:col-span-2">
               {experienceSections.length > 0 && (
@@ -228,7 +259,7 @@ const About: React.FC = () => {
           </div>
         </section>
         <section className="w-full py-16 lg:py-24">
-          <AboutLoginSection /> {/* Giriş bölümünü buraya ekliyoruz */}
+          <AboutLoginSection />
         </section>
       </main>
       <Footer />

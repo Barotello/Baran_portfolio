@@ -14,8 +14,9 @@ import Login from "./pages/Login";
 import ManageProjects from "./pages/Admin/ManageProjects";
 import ManageBlogPosts from "./pages/Admin/ManageBlogPosts";
 import ManageAbout from "./pages/Admin/ManageAbout";
+import ManageProfile from "./pages/Admin/ManageProfile"; // Yeni ManageProfile sayfasını import ediyoruz
 import BlogPostDetails from "./pages/BlogPostDetails";
-import ResetPassword from "./pages/ResetPassword"; // Yeni ResetPassword sayfasını import ediyoruz
+import ResetPassword from "./pages/ResetPassword";
 import { SessionContextProvider } from "./integrations/supabase/auth";
 
 const queryClient = new QueryClient();
@@ -39,7 +40,8 @@ const App = () => (
               <Route path="/admin/projects" element={<ManageProjects />} />
               <Route path="/admin/blog" element={<ManageBlogPosts />} />
               <Route path="/admin/about" element={<ManageAbout />} />
-              <Route path="/reset-password" element={<ResetPassword />} /> {/* Yeni rota */}
+              <Route path="/admin/profile" element={<ManageProfile />} /> {/* Yeni rota */}
+              <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

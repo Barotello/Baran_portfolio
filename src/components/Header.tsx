@@ -4,7 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useSession } from "@/integrations/supabase/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, UserCircle } from "lucide-react"; // UserCircle ikonunu import ediyoruz
 import { showSuccess, showError } from "@/utils/toast";
 import {
   DropdownMenu,
@@ -20,7 +20,6 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     console.log("Attempting logout...");
-    // Optional: Try to refresh session before logging out to ensure token is fresh
     const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
     if (refreshError) {
       console.warn("Warning: Could not refresh session before logout. Proceeding with logout anyway.", refreshError);
@@ -31,12 +30,11 @@ const Header: React.FC = () => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error("Logout failed:", error); // Log the full error object
+      console.error("Logout failed:", error);
       showError("Failed to log out: " + error.message);
     } else {
       console.log("Logged out successfully.");
       showSuccess("Logged out successfully!");
-      // Navigation is handled by SessionContextProvider onAuthStateChange for 'SIGNED_OUT' event
     }
   };
 
@@ -79,6 +77,9 @@ const Header: React.FC = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate('/admin/profile')}>
+                  <UserCircle className="mr-2 h-4 w-4" /> Manage Profile
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/admin/projects')}>
                   Manage Projects
                 </DropdownMenuItem>

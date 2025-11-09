@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,10 +14,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Project } from "@/data/projects";
+import ImageUploadField from "./ImageUploadField"; // Import the new component
+import { uploadFile, deleteFile } from "@/integrations/supabase/storage"; // Import storage utilities
+import { useSession } from "@/integrations/supabase/auth"; // To get user ID
+import { showError } from "@/utils/toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const projectFormSchema = z.object({
   slug: z.string().min(1, { message: "Slug is required." }),
-  image_src: z.string().min(1, { message: "Image Source is required." }),
+  image_src: z.string().min(1, { message: "Image Source is required." }), // This will store the URL
   image_alt: z.string().min(1, { message: "Image Alt Text is required." }),
   title: z.string().min(1, { message: "Title is required." }),
   description: z.string().min(1, { message: "Description is required." }),
@@ -45,6 +50,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   onCancel,
   isSubmitting,
 }) => {
+  const { user } = useSession();
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const form = useForm<z.infer<typeof projectFormSchema>>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
@@ -65,9 +74,40 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     },
   });
 
-  const handleSubmit = (values: z.infer<typeof projectFormSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof projectFormSchema>) => {
+    if (!user?.id) {
+      showError("User not authenticated.");
+      return;
+    }
+
+    setUploadingImage(true);
+    let imageUrl = values.image_src;
+
+    // If a new file is selected, upload it
+    if (selectedImageFile) {
+      // If there was an old image, try to delete it first
+      if (initialData?.image_src && initialData.image_src.startsWith(supabase.storage.from('portfolio-images').getPublicUrl('').data.publicUrl)) {
+        await deleteFile('portfolio-images', initialData.image_src);
+      }
+      const uploadedUrl = await uploadFile('portfolio-images', selectedImageFile, user.id);
+      if (!uploadedUrl) {
+        showError("Failed to upload image.");
+        setUploadingImage(false);
+        return;
+      }
+      imageUrl = uploadedUrl;
+    } else if (!values.image_src && initialData?.image_src) {
+      // If image was cleared and it was an existing Supabase image, delete it
+      if (initialData.image_src.startsWith(supabase.storage.from('portfolio-images').getPublicUrl('').data.publicUrl)) {
+        await deleteFile('portfolio-images', initialData.image_src);
+      }
+      imageUrl = ""; // Clear the image_src in the database
+    }
+    setUploadingImage(false);
+
     const formattedData: Project = {
       ...values,
+      image_src: imageUrl,
       role: values.role.split(",").map((s) => s.trim()).filter(Boolean),
       technologies: values.technologies.split(",").map((s) => s.trim()).filter(Boolean),
     };
@@ -108,10 +148,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           name="image_src"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image Source URL or Local Path</FormLabel>
-              <FormControl>
-                <Input placeholder="https://example.com/image.jpg or /images/my-image.jpg" {...field} />
-              </FormControl>
+              <ImageUploadField
+                label="Project Image"
+                value={field.value}
+                onChange={(file, url) => {
+                  setSelectedImageFile(file);
+                  field.onChange(url); // Update form field with URL (or null if cleared)
+                }}
+                onClear={() => {
+                  setSelectedImageFile(null);
+                  field.onChange(""); // Clear the image_src field in the form
+                }}
+                disabled={isSubmitting || uploadingImage}
+                error={form.formState.errors.image_src?.message}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -227,7 +277,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <FormItem>
               <FormLabel>Live Website Link (Optional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://live-site.com or /images/live-site-screenshot.jpg" {...field} />
+                <Input placeholder="https://live-site.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -240,7 +290,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             <FormItem>
               <FormLabel>GitHub Repo Link (Optional)</FormLabel>
               <FormControl>
-                <Input placeholder="https://github.com/user/repo or /images/github-screenshot.jpg" {...field} />
+                <Input placeholder="https://github.com/user/repo" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -260,11 +310,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           )}
         />
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting || uploadingImage}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save Project"}
+          <Button type="submit" disabled={isSubmitting || uploadingImage}>
+            {isSubmitting || uploadingImage ? "Saving..." : "Save Project"}
           </Button>
         </div>
       </form>
