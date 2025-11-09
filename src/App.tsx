@@ -15,6 +15,7 @@ import ManageProjects from "./pages/Admin/ManageProjects";
 import ManageBlogPosts from "./pages/Admin/ManageBlogPosts";
 import ManageAbout from "./pages/Admin/ManageAbout";
 import BlogPostDetails from "./pages/BlogPostDetails";
+import ResetPassword from "./pages/ResetPassword"; // Yeni ResetPassword sayfasını import ediyoruz
 import { SessionContextProvider } from "./integrations/supabase/auth";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/admin/projects" element={<ManageProjects />} />
               <Route path="/admin/blog" element={<ManageBlogPosts />} />
               <Route path="/admin/about" element={<ManageAbout />} />
+              <Route path="/reset-password" element={<ResetPassword />} /> {/* Yeni rota */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -30,6 +30,8 @@ export const SessionContextProvider: React.FC<{ children: React.ReactNode }> = (
       setIsLoading(false);
       if (_event === 'SIGNED_OUT') {
         navigate('/login');
+      } else if (_event === 'PASSWORD_RECOVERY') { // Şifre sıfırlama olayını yakala
+        navigate('/reset-password'); // Yeni şifre sıfırlama sayfasına yönlendir
       }
     });
 
