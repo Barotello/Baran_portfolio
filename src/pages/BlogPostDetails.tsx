@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { BlogPost } from "@/data/blogPosts";
 import { showError } from "@/utils/toast";
 import { ArrowLeft } from "lucide-react";
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm'; // Import remark-gfm for GitHub Flavored Markdown
 
 const BlogPostDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -94,10 +96,16 @@ const BlogPostDetails: React.FC = () => {
             />
           </div>
 
-          <div className="prose dark:prose-invert max-w-none text-stone-700 dark:text-stone-300 leading-relaxed">
-            {/* This is where the rich content of the blog post will go. */}
-            {/* For now, it's a simple paragraph. In a real app, you might use a markdown renderer or a rich text editor output. */}
-            <p>{blogPost.content}</p>
+          <div className="prose dark:prose-invert max-w-none text-stone-700 dark:text-stone-300 leading-relaxed text-justify">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Add margin-bottom to paragraphs for better spacing
+                p: ({ node, ...props }) => <p className="mb-4" {...props} />,
+              }}
+            >
+              {blogPost.content}
+            </ReactMarkdown>
           </div>
         </article>
       </main>
