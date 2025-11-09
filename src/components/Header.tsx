@@ -4,7 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useSession } from "@/integrations/supabase/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react"; // LogIn kaldırıldı
+import { LogOut } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ const Header: React.FC = () => {
       showError("Failed to log out: " + error.message);
     } else {
       showSuccess("Logged out successfully!");
-      navigate('/about#admin-login'); // Logout sonrası admin giriş bölümüne yönlendir
+      navigate('/about#admin-login');
     }
   };
 
@@ -48,6 +48,7 @@ const Header: React.FC = () => {
               `transition uppercase ${isActive ? 'text-primary font-bold' : 'hover:text-primary'}`
             }
             to="/about"
+            onClick={() => console.log("About link clicked from Header!")} // Geçici olarak eklendi
           >
             About
           </NavLink>
@@ -88,7 +89,7 @@ const Header: React.FC = () => {
           <ThemeToggle />
           {!isLoading && (
             session ? (
-              <div className="md:hidden"> {/* Mobil görünümde oturum açmış kullanıcılar için logout butonu */}
+              <div className="md:hidden">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -100,7 +101,7 @@ const Header: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <a // Link yerine a etiketi kullanıyoruz çünkü mailto harici bir protokoldür
+              <a
                 href="mailto:barandemirtas2@gmail.com"
                 className="flex h-9 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary px-4 text-sm font-bold text-white transition hover:opacity-90"
                 aria-label="Get Contact"
