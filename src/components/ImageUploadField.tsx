@@ -7,9 +7,8 @@ import { cn } from '@/lib/utils';
 
 interface ImageUploadFieldProps {
   label: string;
-  value?: string; // Current image URL
-  onChange: (file: File | null, url: string | null) => void; // Callback for file and URL
-  onClear?: () => void; // Callback to clear the image
+  value?: string; // Current image URL from form/DB
+  onChange: (file: File | null, displayUrl: string | null) => void; // Callback for file and its display URL
   disabled?: boolean;
   className?: string;
   error?: string;
@@ -17,51 +16,61 @@ interface ImageUploadFieldProps {
 
 const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   label,
-  value,
+  value, // This is the URL from the form's image_src field
   onChange,
-  onClear,
   disabled,
   className,
   error,
 }) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [localFile, setLocalFile] = useState<File | null>(null);
+  const [localPreviewUrl, setLocalPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    setPreviewUrl(value || null);
-  }, [value]);
+    // If the external value changes (e.g., form reset, initial load), update local preview
+    // Only update if no local file is selected, to avoid overwriting user's selection
+    if (!localFile) {
+      setLocalPreviewUrl(value || null);
+    }
+  }, [value, localFile]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-        onChange(file, null); // Pass the file, URL will be handled by parent on submit
+        setLocalPreviewUrl(reader.result as string);
+        setLocalFile(file);
+        onChange(file, reader.result as string); // Pass the file and its data URL
       };
       reader.readAsDataURL(file);
     } else {
-      setPreviewUrl(value || null); // Revert to original if no file selected
-      onChange(null, value || null); // Pass null file, keep existing URL
+      // If user opens file dialog but selects nothing, revert to previous state
+      setLocalPreviewUrl(value || null); // Revert to original URL
+      setLocalFile(null);
+      onChange(null, value || null); // Pass null file, original URL
     }
   };
 
   const handleClear = () => {
-    setPreviewUrl(null);
-    onChange(null, null);
+    setLocalPreviewUrl(null);
+    setLocalFile(null);
+    onChange(null, null); // Clear both file and URL
     if (fileInputRef.current) {
       fileInputRef.current.value = ''; // Clear the file input
     }
-    onClear?.();
   };
+
+  // Determine which URL to display: local preview takes precedence over external value
+  const displayUrl = localPreviewUrl || value;
 
   return (
     <div className={cn("space-y-2", className)}>
       <Label>{label}</Label>
       <div className="flex flex-col items-center justify-center rounded-md border border-dashed p-4">
-        {previewUrl ? (
+        {displayUrl ? (
           <div className="relative w-full h-48 mb-4 rounded-md overflow-hidden">
-            <img src={previewUrl} alt="Image Preview" className="w-full h-full object-cover" />
+            <img src={displayUrl} alt="Image Preview" className="w-full h-full object-cover" />
             {!disabled && (
               <Button
                 type="button"
@@ -84,7 +93,7 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           id="file-upload"
           type="file"
           accept="image/*"
-          onChange={handleFileChange}
+          onChange={handleFileSelect}
           disabled={disabled}
           className="hidden" // Hide the default file input
           ref={fileInputRef}
@@ -95,7 +104,7 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
         >
-          {previewUrl ? "Change Image" : "Select Image"}
+          {displayUrl ? "Change Image" : "Select Image"}
         </Button>
       </div>
       {error && <p className="text-sm font-medium text-destructive">{error}</p>}

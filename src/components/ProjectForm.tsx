@@ -14,9 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Project } from "@/data/projects";
-import ImageUploadField from "./ImageUploadField"; // Import the new component
-import { uploadFile, deleteFile } from "@/integrations/supabase/storage"; // Import storage utilities
-import { useSession } from "@/integrations/supabase/auth"; // To get user ID
+import ImageUploadField from "./ImageUploadField";
+import { uploadFile, deleteFile } from "@/integrations/supabase/storage";
+import { useSession } from "@/integrations/supabase/auth";
 import { showError } from "@/utils/toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -81,11 +81,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     }
 
     setUploadingImage(true);
-    let imageUrl = values.image_src;
+    let finalImageUrl = values.image_src; // Start with whatever is in the form field (could be data URL or existing URL)
 
-    // If a new file is selected, upload it
     if (selectedImageFile) {
-      // If there was an old image, try to delete it first
+      // Case 1: A new file was selected. Upload it.
+      // If there was an old image URL from initialData, delete it first.
       if (initialData?.image_src && initialData.image_src.startsWith(supabase.storage.from('portfolio-images').getPublicUrl('').data.publicUrl)) {
         await deleteFile('portfolio-images', initialData.image_src);
       }
@@ -95,19 +95,25 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         setUploadingImage(false);
         return;
       }
-      imageUrl = uploadedUrl;
+      finalImageUrl = uploadedUrl;
     } else if (!values.image_src && initialData?.image_src) {
-      // If image was cleared and it was an existing Supabase image, delete it
+      // Case 2: No new file selected, but the image_src in the form is empty,
+      // AND there was an initial image. This means the user cleared the image.
+      // Delete the old image from Supabase.
       if (initialData.image_src.startsWith(supabase.storage.from('portfolio-images').getPublicUrl('').data.publicUrl)) {
         await deleteFile('portfolio-images', initialData.image_src);
       }
-      imageUrl = ""; // Clear the image_src in the database
+      finalImageUrl = ""; // Ensure it's empty in the database
     }
+    // Case 3: No new file selected, and values.image_src is not empty.
+    // This means the user kept the existing image, or it was never set.
+    // finalImageUrl already holds values.image_src. No action needed for upload/delete.
+
     setUploadingImage(false);
 
     const formattedData: Project = {
       ...values,
-      image_src: imageUrl,
+      image_src: finalImageUrl, // Use the final determined URL
       role: values.role.split(",").map((s) => s.trim()).filter(Boolean),
       technologies: values.technologies.split(",").map((s) => s.trim()).filter(Boolean),
     };
@@ -151,13 +157,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               <ImageUploadField
                 label="Project Image"
                 value={field.value}
-                onChange={(file, url) => {
+                onChange={(file, displayUrl) => {
                   setSelectedImageFile(file);
-                  field.onChange(url); // Update form field with URL (or null if cleared)
-                }}
-                onClear={() => {
-                  setSelectedImageFile(null);
-                  field.onChange(""); // Clear the image_src field in the form
+                  field.onChange(displayUrl || ""); // Update form field with display URL (or empty string if cleared)
                 }}
                 disabled={isSubmitting || uploadingImage}
                 error={form.formState.errors.image_src?.message}

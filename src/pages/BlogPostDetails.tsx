@@ -7,9 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { BlogPost } from "@/data/blogPosts";
 import { showError } from "@/utils/toast";
 import { ArrowLeft } from "lucide-react";
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
-import remarkGfm from 'remark-gfm'; // Import remark-gfm for GitHub Flavored Markdown
-import { format } from "date-fns"; // Import format from date-fns
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks'; // remark-breaks'i import ediyoruz
+import { format } from "date-fns";
 
 const BlogPostDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -99,9 +100,8 @@ const BlogPostDetails: React.FC = () => {
 
           <div className="prose dark:prose-invert max-w-none text-stone-700 dark:text-stone-300 leading-relaxed text-justify">
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkBreaks]} {/* remarkBreaks eklendi */}
               components={{
-                // Add margin-bottom to paragraphs for better spacing
                 p: ({ node, ...props }) => <p className="mb-4" {...props} />,
               }}
             >
