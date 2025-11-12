@@ -8,7 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { AboutSection } from "@/data/about";
 import { showError } from "@/utils/toast";
 import AboutLoginSection from "@/components/AboutLoginSection";
-import { useSession } from "@/integrations/supabase/auth"; // useSession'ı import ediyoruz
+import { useSession } from "@/integrations/supabase/auth";
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm'; // Import remark-gfm for GitHub Flavored Markdown
 
 interface Profile {
   id: string;
@@ -18,7 +20,7 @@ interface Profile {
 }
 
 const About: React.FC = () => {
-  const { user } = useSession(); // Mevcut kullanıcıyı alıyoruz
+  const { user } = useSession();
   const [aboutSections, setAboutSections] = useState<AboutSection[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -54,21 +56,23 @@ const About: React.FC = () => {
           setProfile(data);
         }
       } else {
-        setProfile(null); // No user, no profile
+        setProfile(null);
       }
     };
 
     fetchAboutContent();
     fetchProfileData();
-  }, [user]); // user değiştiğinde tekrar fetch et
+  }, [user]);
 
   const renderSection = (section: AboutSection) => {
     switch (section.section_type) {
       case 'summary':
         return (
-          <p className="text-stone-600 dark:text-stone-400 text-justify">
-            {section.description}
-          </p>
+          <div className="prose dark:prose-invert max-w-none text-stone-600 dark:text-stone-400 leading-relaxed text-justify">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {section.description || ''}
+            </ReactMarkdown>
+          </div>
         );
       case 'experience':
         return (
@@ -101,7 +105,13 @@ const About: React.FC = () => {
                 <h4 className="font-bold">{section.title}</h4>
                 {section.subtitle && <span className="text-sm text-stone-500 dark:text-stone-400">{section.subtitle}</span>}
               </div>
-              {section.description && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{section.description}</p>}
+              {section.description && (
+                <div className="prose dark:prose-invert max-w-none text-stone-600 dark:text-stone-300 leading-relaxed text-justify">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {section.description}
+                  </ReactMarkdown>
+                </div>
+              )}
               {section.gpa && <p className="text-sm text-stone-600 dark:text-stone-400">GPA: {section.gpa}</p>}
             </div>
           </div>
@@ -168,7 +178,7 @@ const About: React.FC = () => {
   const languageSections = aboutSections.filter(s => s.section_type === 'language');
   const certificateSections = aboutSections.filter(s => s.section_type === 'certificate');
 
-  const profileImageSrc = profile?.avatar_url || "/images/profile-placeholder.jpg"; // Use placeholder if no avatar
+  const profileImageSrc = profile?.avatar_url || "/images/profile-placeholder.jpg";
 
   return (
     <Layout>
@@ -180,7 +190,7 @@ const About: React.FC = () => {
               <img
                 className="aspect-square w-48 rounded-full object-cover shadow-lg lg:w-full lg:rounded-2xl"
                 alt="Professional headshot of Baran Demirtaş"
-                src={profileImageSrc} // Dinamik avatar URL'sini kullanıyoruz
+                src={profileImageSrc}
               />
               <div className="flex flex-col gap-2">
                 <h1 className="text-4xl font-bold tracking-tight">{profile?.first_name} {profile?.last_name}</h1>
