@@ -9,6 +9,7 @@ import { showError } from "@/utils/toast";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
 import remarkGfm from 'remark-gfm'; // Import remark-gfm for GitHub Flavored Markdown
+import { format } from "date-fns"; // Import format from date-fns
 
 const BlogPostDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -84,7 +85,7 @@ const BlogPostDetails: React.FC = () => {
               {blogPost.description}
             </p>
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              {blogPost.date}
+              {format(new Date(blogPost.date), 'dd MMMM yyyy')}
             </p>
           </div>
 

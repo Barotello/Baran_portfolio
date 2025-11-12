@@ -22,7 +22,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
   imageSrc,
   imageAlt,
 }) => {
-  const formattedDate = format(new Date(date), 'MMMM dd, yyyy'); // Tarihi formatlıyoruz
+  const formattedDate = format(new Date(date), 'dd MMMM yyyy'); // Tarihi formatlıyoruz
 
   return (
     <div className="@container">

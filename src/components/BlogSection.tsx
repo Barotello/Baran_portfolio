@@ -75,7 +75,7 @@ const BlogSection: React.FC = () => {
                 </p>
                 <div className="flex items-center justify-between gap-3 pt-2">
                   <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                    {format(new Date(post.date), 'MMMM dd, yyyy')}
+                    {format(new Date(post.date), 'dd MMMM yyyy')}
                   </p>
                   <span className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-8 text-sm font-medium text-primary hover:text-primary/80">
                     <span className="truncate">Read More</span>
