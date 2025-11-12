@@ -100,7 +100,7 @@ const BlogPostDetails: React.FC = () => {
 
           <div className="prose dark:prose-invert max-w-none text-stone-700 dark:text-stone-300 leading-relaxed text-justify">
             <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]} {/* remarkBreaks eklendi */}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
               components={{
                 p: ({ node, ...props }) => <p className="mb-4" {...props} />,
               }}
