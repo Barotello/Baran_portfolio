@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { format } from "date-fns"; // date-fns'i import ediyoruz
+import { format } from "date-fns";
 
 interface BlogPostCardProps {
   slug: string;
@@ -22,11 +22,11 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
   imageSrc,
   imageAlt,
 }) => {
-  const formattedDate = format(new Date(date), 'dd MMMM yyyy'); // Tarihi formatlıyoruz
+  const formattedDate = format(new Date(date), 'dd MMMM yyyy');
 
   return (
     <div className="@container">
-      <div className="flex flex-col items-stretch justify-start rounded-xl border border-white/20 bg-white/40 p-4 shadow-lg backdrop-blur-lg transition-transform duration-300 hover:scale-[1.02] dark:bg-black/30 @xl:flex-row @xl:items-start @xl:p-6">
+      <Link to={`/blog/${slug}`} className="flex flex-col items-stretch justify-start rounded-xl border border-white/20 bg-white/40 p-4 shadow-lg backdrop-blur-lg transition-transform duration-300 hover:scale-[1.02] dark:bg-black/30 @xl:flex-row @xl:items-start @xl:p-6">
         <div
           className="w-full shrink-0 rounded-lg bg-cover bg-center bg-no-repeat aspect-video @xl:w-80 @xl:aspect-square"
           style={{ backgroundImage: `url("${imageSrc}")` }}
@@ -44,15 +44,12 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
           </p>
           <div className="flex items-center justify-between gap-3 pt-2">
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              {formattedDate} {/* Formatlanmış tarihi kullanıyoruz */}
+              {formattedDate}
             </p>
-            <Link to={`/blog/${slug}`} className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-8 text-sm font-medium text-primary hover:text-primary/80">
-              <span className="truncate">Read More</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {/* "Read More" butonu kaldırıldı */}
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
