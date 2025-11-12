@@ -12,7 +12,7 @@ const HeroSection: React.FC = () => {
             Product Designer &amp; Developer
           </p>
           <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl">
-            Architect intuitive digital experiences by fusing clean design principles with rock-solid, AI-accelerated development. Leveraging React Native, TypeScript, and Supabase
+            Yapay zeka destekli uygulamalar geliştirmeye çalışıyorum. Günümüzde iyi işler çıkaranlar yapay zekayı efektif kullananlar olacak gibi, o iş bende. Şimdi projelerimi buraya eklemeye başlayacağım.
           </h2>
         </div>
         {/* "See My Projects" butonu buradan kaldırıldı */}
