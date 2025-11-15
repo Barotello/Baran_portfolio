@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ImageLightbox from "./ImageLightbox"; // Yeni ImageLightbox bileşenini import ediyoruz
 
 interface ProjectCardProps {
   imageSrc: string;
@@ -8,7 +7,7 @@ interface ProjectCardProps {
   title: string;
   description: string;
   tags: string;
-  slug: string;
+  slug: string; // Changed from caseStudyLink to slug
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -21,22 +20,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-xl">
-      {/* ImageLightbox'ı görselin etrafına sarıyoruz */}
-      <ImageLightbox src={imageSrc} alt={imageAlt}>
-        {/* DialogTrigger'ın Link'i tetiklemesini engellemek için onClick kullanıyoruz */}
-        <div
-          className="absolute inset-0 cursor-pointer"
-          onClick={(e) => e.stopPropagation()} // Link'in tetiklenmesini engelle
-          aria-label={`View larger image of ${title}`}
-        >
-          <img
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            alt={imageAlt}
-            src={imageSrc}
-          />
-        </div>
-      </ImageLightbox>
-      
+      <img
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        alt={imageAlt}
+        src={imageSrc}
+      />
       <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/40 to-transparent p-6">
         <h3 className="text-xl font-bold text-white">{title}</h3>
         <p className="text-sm text-stone-200">{tags}</p>
