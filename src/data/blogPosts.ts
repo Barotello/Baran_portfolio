@@ -10,6 +10,7 @@ export interface BlogPost {
   image_alt: string; // Renamed to match DB schema
   content: string; // Added for full blog post content
   created_at?: string; // Supabase will generate this
+  author_name?: string; // New field for author's full name
 }
 
 // Statik blog yazıları dizisi kaldırıldı. Veriler artık Supabase'den çekilecek.

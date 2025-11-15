@@ -22,13 +22,17 @@ const Blog: React.FC = () => {
       setLoading(true);
       const { data: postsData, error: postsError } = await supabase
         .from('blog_posts')
-        .select('*, category') // Kategori sütununu da seçiyoruz
+        .select('*, profiles(first_name, last_name)') // Yazar bilgilerini çekiyoruz
         .order('date', { ascending: false });
 
       if (postsError) {
         showError("Error fetching blog posts: " + postsError.message);
       } else {
-        setAllBlogPosts(postsData || []);
+        const formattedPosts = postsData?.map(post => ({
+          ...post,
+          author_name: post.profiles ? `${post.profiles.first_name || ''} ${post.profiles.last_name || ''}`.trim() : 'Unknown Author'
+        })) || [];
+        setAllBlogPosts(formattedPosts);
 
         // Benzersiz kategorileri çıkar ve 'All' ile birleştir
         const uniqueCategories = Array.from(new Set(postsData?.map(post => post.category))).filter(Boolean) as string[];
@@ -118,6 +122,7 @@ const Blog: React.FC = () => {
                 date={post.date}
                 imageSrc={post.image_src}
                 imageAlt={post.image_alt}
+                authorName={post.author_name} // Pass author name
               />
             ))
           ) : (

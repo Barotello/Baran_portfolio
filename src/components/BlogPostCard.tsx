@@ -11,6 +11,7 @@ interface BlogPostCardProps {
   date: string;
   imageSrc: string;
   imageAlt: string;
+  authorName?: string; // New prop
 }
 
 const BlogPostCard: React.FC<BlogPostCardProps> = ({
@@ -21,6 +22,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
   date,
   imageSrc,
   imageAlt,
+  authorName, // Destructure new prop
 }) => {
   const formattedDate = format(new Date(date), 'dd MMMM yyyy');
 
@@ -44,7 +46,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({
           </p>
           <div className="flex items-center justify-between gap-3 pt-2">
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              {formattedDate}
+              {formattedDate} {authorName && `by ${authorName}`} {/* Display author name */}
             </p>
             {/* "Read More" butonu kaldırıldı */}
           </div>
