@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/data/projects";
 import { showError } from "@/utils/toast";
 import { cn } from "@/lib/utils"; // cn utility'yi import ediyoruz
+import ImageLightbox from "@/components/ImageLightbox"; // Yeni ImageLightbox bileşenini import ediyoruz
 
 // Teknoloji etiketleri için renk sınıfları paleti
 const tagColorClasses = [
@@ -104,11 +105,14 @@ const ProjectDetails: React.FC = () => {
 
         <section className="w-full py-12">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl">
-            <img
-              alt={project.image_alt}
-              className="h-full w-full object-cover"
-              src={project.image_src}
-            />
+            {/* ImageLightbox'ı ana proje görselinin etrafına sarıyoruz */}
+            <ImageLightbox src={project.image_src} alt={project.image_alt}>
+              <img
+                alt={project.image_alt}
+                className="h-full w-full object-cover cursor-pointer"
+                src={project.image_src}
+              />
+            </ImageLightbox>
             <div className="absolute bottom-4 right-4 flex gap-3">
               {project.live_website_link && (
                 <a
