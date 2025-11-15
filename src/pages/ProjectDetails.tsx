@@ -133,7 +133,8 @@ const ProjectDetails: React.FC = () => {
                 {project.overview}
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Problem ve Solution bölümlerini alt alta gelecek şekilde düzenledik */}
+            <div className="flex flex-col gap-8"> 
               <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
                 <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
                 <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
