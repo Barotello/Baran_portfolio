@@ -150,7 +150,7 @@ const ProjectDetails: React.FC = () => {
             </div>
           </div>
           <aside className="lg:col-span-1 flex flex-col gap-8">
-            <div className="flex-grow rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">My Role</h4>
               <ul className="flex flex-col gap-2 text-stone-600 dark:text-stone-300 text-sm">
                 {project.role?.map((item, i) => (
@@ -158,7 +158,7 @@ const ProjectDetails: React.FC = () => {
                 ))}
               </ul>
             </div>
-            <div className="flex-grow rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">Technologies Used</h4>
               <div className="flex flex-wrap gap-2">
                 {project.technologies?.map((tech, i) => (
