@@ -1,4 +1,3 @@
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,7 +13,7 @@ import Login from "./pages/Login";
 import ManageProjects from "./pages/Admin/ManageProjects";
 import ManageBlogPosts from "./pages/Admin/ManageBlogPosts";
 import ManageAbout from "./pages/Admin/ManageAbout";
-import ManageProfile from "./pages/Admin/ManageProfile"; // Yeni ManageProfile sayfasını import ediyoruz
+import ManageProfile from "./pages/Admin/ManageProfile";
 import BlogPostDetails from "./pages/BlogPostDetails";
 import ResetPassword from "./pages/ResetPassword";
 import { SessionContextProvider } from "./integrations/supabase/auth";
@@ -24,7 +23,6 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
       <Sonner />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <BrowserRouter future={{ v7_relativeSplatPath: true }}>
@@ -40,7 +38,7 @@ const App = () => (
               <Route path="/admin/projects" element={<ManageProjects />} />
               <Route path="/admin/blog" element={<ManageBlogPosts />} />
               <Route path="/admin/about" element={<ManageAbout />} />
-              <Route path="/admin/profile" element={<ManageProfile />} /> {/* Yeni rota */}
+              <Route path="/admin/profile" element={<ManageProfile />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
