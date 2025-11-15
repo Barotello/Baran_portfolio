@@ -18,7 +18,6 @@ export interface Project {
   github_repo_link?: string;
   next_project_slug?: string; // For linking to the next project
   created_at?: string; // Supabase will generate this
-  author_name?: string; // New field for author's full name
 }
 
 // Statik projeler dizisi kaldırıldı. Veriler artık Supabase'den çekilecek.

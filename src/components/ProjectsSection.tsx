@@ -13,18 +13,14 @@ const ProjectsSection: React.FC = () => {
     const fetchProjects = async () => {
       const { data, error } = await supabase
         .from('projects')
-        .select('*, profiles(first_name, last_name)') // Yazar bilgilerini çekiyoruz
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(4); // Sadece ilk 4 projeyi göster
 
       if (error) {
         showError("Error fetching projects: " + error.message);
       } else {
-        const formattedProjects = data?.map(project => ({
-          ...project,
-          author_name: project.profiles ? `${project.profiles.first_name || ''} ${project.profiles.last_name || ''}`.trim() : 'Unknown Author'
-        })) || [];
-        setProjects(formattedProjects);
+        setProjects(data || []);
       }
       setLoading(false);
     };
@@ -68,7 +64,6 @@ const ProjectsSection: React.FC = () => {
               tags={project.tags}
               description={project.description}
               slug={project.slug}
-              authorName={project.author_name} // Pass author name
             />
           ))}
         </div>

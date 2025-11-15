@@ -14,18 +14,14 @@ const BlogSection: React.FC = () => {
     const fetchBlogPosts = async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('*, profiles(first_name, last_name)') // Yazar bilgilerini çekiyoruz
+        .select('*')
         .order('date', { ascending: false })
         .limit(3); // Sadece en son 3 blog yazısını göster
 
       if (error) {
         showError("Error fetching blog posts: " + error.message);
       } else {
-        const formattedPosts = data?.map(post => ({
-          ...post,
-          author_name: post.profiles ? `${post.profiles.first_name || ''} ${post.profiles.last_name || ''}`.trim() : 'Unknown Author'
-        })) || [];
-        setBlogPosts(formattedPosts);
+        setBlogPosts(data || []);
       }
       setLoading(false);
     };
@@ -79,7 +75,7 @@ const BlogSection: React.FC = () => {
                 </p>
                 <div className="flex items-center justify-between gap-3 pt-2">
                   <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                    {format(new Date(post.date), 'dd MMMM yyyy')} {post.author_name && `by ${post.author_name}`} {/* Display author name */}
+                    {format(new Date(post.date), 'dd MMMM yyyy')}
                   </p>
                   <span className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-8 text-sm font-medium text-primary hover:text-primary/80">
                     <span className="truncate">Read More</span>

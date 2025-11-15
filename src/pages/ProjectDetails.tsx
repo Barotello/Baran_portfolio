@@ -30,7 +30,7 @@ const ProjectDetails: React.FC = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('projects')
-        .select('*, profiles(first_name, last_name)') // Yazar bilgilerini çekiyoruz
+        .select('*')
         .eq('slug', slug)
         .limit(1); // .single() yerine .limit(1) kullanıldı
 
@@ -38,38 +38,21 @@ const ProjectDetails: React.FC = () => {
         showError("Error fetching project details: " + error.message);
         setProject(null);
       } else {
-        const fetchedProject = data?.[0] || null;
-        if (fetchedProject) {
-          setProject({
-            ...fetchedProject,
-            author_name: fetchedProject.profiles ? `${fetchedProject.profiles.first_name || ''} ${fetchedProject.profiles.last_name || ''}`.trim() : 'Unknown Author'
-          });
-
-          if (fetchedProject.next_project_slug) {
-            const { data: nextProjectData, error: nextProjectError } = await supabase
-              .from('projects')
-              .select('*, profiles(first_name, last_name)') // Next proje için de yazar bilgilerini çekiyoruz
-              .eq('slug', fetchedProject.next_project_slug)
-              .limit(1);
-            if (nextProjectError) {
-              console.error("Error fetching next project: ", nextProjectError.message);
-              setNextProject(null);
-            } else {
-              const fetchedNextProject = nextProjectData?.[0] || null;
-              if (fetchedNextProject) {
-                setNextProject({
-                  ...fetchedNextProject,
-                  author_name: fetchedNextProject.profiles ? `${fetchedNextProject.profiles.first_name || ''} ${fetchedNextProject.profiles.last_name || ''}`.trim() : 'Unknown Author'
-                });
-              } else {
-                setNextProject(null);
-              }
-            }
-          } else {
+        setProject(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
+        if (data?.[0]?.next_project_slug) {
+          const { data: nextProjectData, error: nextProjectError } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('slug', data[0].next_project_slug)
+            .limit(1); // .single() yerine .limit(1) kullanıldı
+          if (nextProjectError) {
+            console.error("Error fetching next project: ", nextProjectError.message);
             setNextProject(null);
+          } else {
+            setNextProject(nextProjectData?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
           }
         } else {
-          setProject(null);
+          setNextProject(null);
         }
       }
       setLoading(false);
@@ -117,11 +100,6 @@ const ProjectDetails: React.FC = () => {
           <h2 className="text-lg font-normal text-stone-600 dark:text-stone-300 md:text-xl max-w-3xl">
             {project.description}
           </h2>
-          {project.author_name && (
-            <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              by {project.author_name}
-            </p>
-          )}
         </section>
 
         <section className="w-full py-12">

@@ -22,7 +22,7 @@ const BlogPostDetails: React.FC = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('*, profiles(first_name, last_name)') // Yazar bilgilerini çekiyoruz
+        .select('*')
         .eq('slug', slug)
         .limit(1); // .single() yerine .limit(1) kullanıldı
 
@@ -30,15 +30,7 @@ const BlogPostDetails: React.FC = () => {
         showError("Error fetching blog post details: " + error.message);
         setBlogPost(null);
       } else {
-        const fetchedPost = data?.[0] || null;
-        if (fetchedPost) {
-          setBlogPost({
-            ...fetchedPost,
-            author_name: fetchedPost.profiles ? `${fetchedPost.profiles.first_name || ''} ${fetchedPost.profiles.last_name || ''}`.trim() : 'Unknown Author'
-          });
-        } else {
-          setBlogPost(null);
-        }
+        setBlogPost(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
       }
       setLoading(false);
     };
@@ -94,7 +86,7 @@ const BlogPostDetails: React.FC = () => {
               {blogPost.description}
             </p>
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              {format(new Date(blogPost.date), 'dd MMMM yyyy')} {blogPost.author_name && `by ${blogPost.author_name}`} {/* Display author name */}
+              {format(new Date(blogPost.date), 'dd MMMM yyyy')}
             </p>
           </div>
 
