@@ -140,7 +140,7 @@ const ProjectDetails: React.FC = () => {
           <div className="lg:col-span-2 flex flex-col gap-10">
             <div className="flex flex-col gap-4">
               <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Project Overview</h3>
-              <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
+              <p className="text-stone-600 dark:text-stone-300 leading-relaxed text-justify">
                 {project.overview}
               </p>
             </div>
@@ -148,13 +148,13 @@ const ProjectDetails: React.FC = () => {
             <div className="flex flex-col gap-8"> 
               <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
                 <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed text-justify">
                   {project.problem}
                 </p>
               </div>
               <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
                 <h4 className="text-xl font-bold tracking-tight">The Solution</h4>
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed text-justify">
                   {project.solution}
                 </p>
               </div>
