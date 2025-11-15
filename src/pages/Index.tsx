@@ -7,27 +7,38 @@ import AboutSection from "@/components/AboutSection";
 import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal"; // Yeni bileşeni import ediyoruz
 
 const Index: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <main className="flex flex-col items-center pt-16 sm:pt-24 lg:pt-32"> {/* max-w-4xl ve px-4 kaldırıldı */}
-        <div className="w-full"> {/* HeroSection için varsayılan arka plan */}
-          <HeroSection />
-        </div>
-        <div className="w-full"> {/* ProjectsSection için farklı arka plan */}
-          <ProjectsSection />
-        </div>
-        <div className="w-full"> {/* AboutSection için varsayılan arka plan */}
-          <AboutSection />
-        </div>
-        <div className="w-full"> {/* BlogSection için farklı arka plan */}
-          <BlogSection />
-        </div>
-        <div className="w-full"> {/* ContactSection için varsayılan arka plan */}
-          <ContactSection />
-        </div>
+      <main className="flex flex-col items-center pt-16 sm:pt-24 lg:pt-32">
+        <ScrollReveal>
+          <div className="w-full">
+            <HeroSection />
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <div className="w-full">
+            <ProjectsSection />
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={200}>
+          <div className="w-full">
+            <AboutSection />
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={300}>
+          <div className="w-full">
+            <BlogSection />
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={400}>
+          <div className="w-full">
+            <ContactSection />
+          </div>
+        </ScrollReveal>
       </main>
       <Footer />
     </Layout>
