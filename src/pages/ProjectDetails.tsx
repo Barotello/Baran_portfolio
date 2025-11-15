@@ -133,15 +133,15 @@ const ProjectDetails: React.FC = () => {
                 {project.overview}
               </p>
             </div>
-            {/* Problem ve Solution bölümlerini alt alta gelecek şekilde düzenledik */}
-            <div className="flex flex-col gap-8"> 
-              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+            {/* Problem ve Solution bölümlerini yan yana gelecek şekilde düzenledik */}
+            <div className="flex flex-col lg:flex-row gap-8"> 
+              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
                 <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
                 <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
                   {project.problem}
                 </p>
               </div>
-              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
+              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
                 <h4 className="text-xl font-bold tracking-tight">The Solution</h4>
                 <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
                   {project.solution}
