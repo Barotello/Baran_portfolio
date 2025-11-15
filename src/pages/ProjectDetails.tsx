@@ -7,6 +7,17 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/data/projects";
 import { showError } from "@/utils/toast";
+import { cn } from "@/lib/utils"; // cn utility'yi import ediyoruz
+
+// Teknoloji etiketleri için renk sınıfları paleti
+const tagColorClasses = [
+  { bg: "bg-blue-500/20", text: "text-blue-500", border: "border-blue-500/50" },
+  { bg: "bg-green-500/20", text: "text-green-500", border: "border-green-500/50" },
+  { bg: "bg-purple-500/20", text: "text-purple-500", border: "border-purple-500/50" },
+  { bg: "bg-indigo-500/20", text: "text-indigo-500", border: "border-indigo-500/50" },
+  { bg: "bg-pink-500/20", text: "text-pink-500", border: "border-pink-500/50" },
+  { bg: "bg-yellow-500/20", text: "text-yellow-500", border: "border-yellow-500/50" },
+];
 
 const ProjectDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -149,7 +160,7 @@ const ProjectDetails: React.FC = () => {
               </div>
             </div>
           </div>
-          <aside className="lg:col-span-1 flex flex-col gap-8 lg:mt-12"> {/* Buraya lg:mt-12 eklendi */}
+          <aside className="lg:col-span-1 flex flex-col gap-8 lg:mt-12">
             <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">My Role</h4>
               <ul className="flex flex-col gap-2 text-stone-600 dark:text-stone-300 text-sm">
@@ -161,11 +172,22 @@ const ProjectDetails: React.FC = () => {
             <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">Technologies Used</h4>
               <div className="flex flex-wrap gap-2">
-                {project.technologies?.map((tech, i) => (
-                  <span key={i} className="rounded-full border border-primary/50 bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
-                    {tech}
-                  </span>
-                ))}
+                {project.technologies?.map((tech, i) => {
+                  const colorSet = tagColorClasses[i % tagColorClasses.length];
+                  return (
+                    <span
+                      key={i}
+                      className={cn(
+                        "rounded-full px-3 py-1 text-sm font-medium",
+                        colorSet.border,
+                        colorSet.bg,
+                        colorSet.text
+                      )}
+                    >
+                      {tech}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </aside>
