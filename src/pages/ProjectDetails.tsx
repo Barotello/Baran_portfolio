@@ -32,24 +32,24 @@ const ProjectDetails: React.FC = () => {
         .from('projects')
         .select('*')
         .eq('slug', slug)
-        .single();
+        .limit(1); // .single() yerine .limit(1) kullanıldı
 
       if (error) {
         showError("Error fetching project details: " + error.message);
         setProject(null);
       } else {
-        setProject(data);
-        if (data?.next_project_slug) {
+        setProject(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
+        if (data?.[0]?.next_project_slug) {
           const { data: nextProjectData, error: nextProjectError } = await supabase
             .from('projects')
             .select('*')
-            .eq('slug', data.next_project_slug)
-            .single();
+            .eq('slug', data[0].next_project_slug)
+            .limit(1); // .single() yerine .limit(1) kullanıldı
           if (nextProjectError) {
             console.error("Error fetching next project: ", nextProjectError.message);
             setNextProject(null);
           } else {
-            setNextProject(nextProjectData);
+            setNextProject(nextProjectData?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
           }
         } else {
           setNextProject(null);

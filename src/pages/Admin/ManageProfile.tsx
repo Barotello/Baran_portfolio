@@ -36,13 +36,13 @@ const ManageProfile: React.FC = () => {
       .from('profiles')
       .select('id, first_name, last_name, avatar_url')
       .eq('id', userId)
-      .single();
+      .limit(1); // .single() yerine .limit(1) kullanıldı
 
     if (error) {
       showError("Error fetching profile: " + error.message);
       setProfile({ id: userId, first_name: null, last_name: null, avatar_url: null }); // Initialize with user ID
     } else {
-      setProfile(data);
+      setProfile(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
     }
     setLoading(false);
   };

@@ -47,13 +47,13 @@ const About: React.FC = () => {
           .from('profiles')
           .select('id, first_name, last_name, avatar_url')
           .eq('id', user.id)
-          .single();
+          .limit(1); // .single() yerine .limit(1) kullanıldı
 
         if (error) {
           console.error("Error fetching profile for About page:", error.message);
           setProfile(null);
         } else {
-          setProfile(data);
+          setProfile(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
         }
       } else {
         setProfile(null);

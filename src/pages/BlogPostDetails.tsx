@@ -24,13 +24,13 @@ const BlogPostDetails: React.FC = () => {
         .from('blog_posts')
         .select('*')
         .eq('slug', slug)
-        .single();
+        .limit(1); // .single() yerine .limit(1) kullanıldı
 
       if (error) {
         showError("Error fetching blog post details: " + error.message);
         setBlogPost(null);
       } else {
-        setBlogPost(data);
+        setBlogPost(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
       }
       setLoading(false);
     };
