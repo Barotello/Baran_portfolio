@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/data/projects";
 import { showError } from "@/utils/toast";
 import { cn } from "@/lib/utils"; // cn utility'yi import ediyoruz
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"; // Dialog bileşenlerini import ediyoruz
 
 // Teknoloji etiketleri için renk sınıfları paleti
 const tagColorClasses = [
@@ -103,37 +104,53 @@ const ProjectDetails: React.FC = () => {
         </section>
 
         <section className="w-full py-12">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl">
-            <img
-              alt={project.image_alt}
-              className="h-full w-full object-cover"
-              src={project.image_src}
-            />
-            <div className="absolute bottom-4 right-4 flex gap-3">
-              {project.live_website_link && (
-                <a
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.live_website_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Live Website"
-                >
-                  <Globe className="h-6 w-6" />
-                </a>
-              )}
-              {project.github_repo_link && (
-                <a
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.github_repo_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Repository"
-                >
-                  <Github className="h-6 w-6" />
-                </a>
-              )}
-            </div>
-          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl cursor-pointer group">
+                <img
+                  alt={project.image_alt}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  src={project.image_src}
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="text-white text-lg font-semibold">View Full Image</span>
+                </div>
+                <div className="absolute bottom-4 right-4 flex gap-3">
+                  {project.live_website_link && (
+                    <a
+                      className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                      href={project.live_website_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Live Website"
+                      onClick={(e) => e.stopPropagation()} {/* Dialog'un açılmasını engelle */}
+                    >
+                      <Globe className="h-6 w-6" />
+                    </a>
+                  )}
+                  {project.github_repo_link && (
+                    <a
+                      className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                      href={project.github_repo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub Repository"
+                      onClick={(e) => e.stopPropagation()} {/* Dialog'un açılmasını engelle */}
+                    >
+                      <Github className="h-6 w-6" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="max-w-screen-lg max-h-[90vh] overflow-hidden p-0">
+              <img
+                src={project.image_src}
+                alt={project.image_alt}
+                className="w-full h-full object-contain"
+              />
+            </DialogContent>
+          </Dialog>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-12">
