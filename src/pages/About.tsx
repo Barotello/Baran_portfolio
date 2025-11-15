@@ -27,7 +27,6 @@ const About: React.FC = () => {
 
   useEffect(() => {
     const fetchAboutContent = async () => {
-      setLoading(true);
       const { data, error } = await supabase
         .from('about_sections')
         .select('*')
@@ -38,31 +37,39 @@ const About: React.FC = () => {
       } else {
         setAboutSections(data || []);
       }
-      setLoading(false);
     };
 
     const fetchProfileData = async () => {
-      if (user?.id) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id, first_name, last_name, avatar_url')
-          .eq('id', user.id)
-          .limit(1); // .single() yerine .limit(1) kullanıldı
+      // Her zaman bir profil çekmeye çalış.
+      // Eğer giriş yapılmışsa, mevcut kullanıcının profilini çek.
+      // Eğer çıkış yapılmışsa, ilk bulunan profili çek (portföy sahibinin profili olduğu varsayılır).
+      let query = supabase
+        .from('profiles')
+        .select('id, first_name, last_name, avatar_url')
+        .limit(1); // Ana profil için her zaman 1 ile sınırla
 
-        if (error) {
-          console.error("Error fetching profile for About page:", error.message);
-          setProfile(null);
-        } else {
-          setProfile(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
-        }
-      } else {
+      if (user?.id) {
+        query = query.eq('id', user.id);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error("Error fetching profile for About page:", error.message);
         setProfile(null);
+      } else {
+        setProfile(data?.[0] || null);
       }
     };
 
-    fetchAboutContent();
-    fetchProfileData();
-  }, [user]);
+    const initializeData = async () => {
+      setLoading(true);
+      await Promise.all([fetchAboutContent(), fetchProfileData()]);
+      setLoading(false);
+    };
+
+    initializeData();
+  }, [user]); // user bağımlılığı, giriş/çıkış durumunda profilin güncellenmesini sağlar
 
   const renderSection = (section: AboutSection) => {
     switch (section.section_type) {
