@@ -127,9 +127,8 @@ const ProjectDetails: React.FC = () => {
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-12">
           <div className="lg:col-span-2 flex flex-col gap-10">
-            {/* Project Overview bölümünü bir kart içine alıyoruz */}
-            <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
-              <h3 className="text-2xl font-bold tracking-tight sm:text-3xl mb-4">Project Overview</h3>
+            <div className="flex flex-col gap-4">
+              <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Project Overview</h3>
               <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
                 {project.overview}
               </p>
