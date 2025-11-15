@@ -125,31 +125,37 @@ const ProjectDetails: React.FC = () => {
           </div>
         </section>
 
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-12">
-          <div className="lg:col-span-2 flex flex-col gap-10">
-            <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Project Overview</h3>
-              <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
-                {project.overview}
+        {/* Project Overview Section */}
+        <section className="w-full py-12">
+          <div className="flex flex-col gap-4">
+            <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Project Overview</h3>
+            <p className="text-stone-600 dark:text-stone-300 leading-relaxed">
+              {project.overview}
+            </p>
+          </div>
+        </section>
+
+        {/* Problem and Solution Section - Now full width and side-by-side on large screens */}
+        <section className="w-full py-12">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
+              <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
+              <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                {project.problem}
               </p>
             </div>
-            {/* Problem ve Solution bölümlerini yan yana gelecek şekilde düzenledik */}
-            <div className="flex flex-col lg:flex-row gap-8"> 
-              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
-                <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
-                  {project.problem}
-                </p>
-              </div>
-              <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
-                <h4 className="text-xl font-bold tracking-tight">The Solution</h4>
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
-                  {project.solution}
-                </p>
-              </div>
+            <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl flex-1">
+              <h4 className="text-xl font-bold tracking-tight">The Solution</h4>
+              <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                {project.solution}
+              </p>
             </div>
           </div>
-          <aside className="lg:col-span-1 flex flex-col gap-8">
+        </section>
+
+        {/* My Role and Technologies Used Section - Now full width, below Problem/Solution */}
+        <section className="w-full py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
               <h4 className="text-xl font-bold tracking-tight mb-4">My Role</h4>
               <ul className="flex flex-col gap-2 text-stone-600 dark:text-stone-300 text-sm">
@@ -168,7 +174,7 @@ const ProjectDetails: React.FC = () => {
                 ))}
               </div>
             </div>
-          </aside>
+          </div>
         </section>
 
         {nextProject && (
