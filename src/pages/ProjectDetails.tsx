@@ -7,7 +7,8 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/data/projects";
 import { showError } from "@/utils/toast";
-import { cn } from "@/lib/utils"; // cn utility'yi import ediyoruz
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 // Teknoloji etiketleri için renk sınıfları paleti
 const tagColorClasses = [
@@ -32,24 +33,24 @@ const ProjectDetails: React.FC = () => {
         .from('projects')
         .select('*')
         .eq('slug', slug)
-        .limit(1); // .single() yerine .limit(1) kullanıldı
+        .limit(1);
 
       if (error) {
         showError("Error fetching project details: " + error.message);
         setProject(null);
       } else {
-        setProject(data?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
+        setProject(data?.[0] || null);
         if (data?.[0]?.next_project_slug) {
           const { data: nextProjectData, error: nextProjectError } = await supabase
             .from('projects')
             .select('*')
             .eq('slug', data[0].next_project_slug)
-            .limit(1); // .single() yerine .limit(1) kullanıldı
+            .limit(1);
           if (nextProjectError) {
             console.error("Error fetching next project: ", nextProjectError.message);
             setNextProject(null);
           } else {
-            setNextProject(nextProjectData?.[0] || null); // data bir dizi olduğu için ilk elemanı alıyoruz
+            setNextProject(nextProjectData?.[0] || null);
           }
         } else {
           setNextProject(null);
@@ -103,37 +104,53 @@ const ProjectDetails: React.FC = () => {
         </section>
 
         <section className="w-full py-12">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl">
-            <img
-              alt={project.image_alt}
-              className="h-full w-full object-cover"
-              src={project.image_src}
-            />
-            <div className="absolute bottom-4 right-4 flex gap-3">
-              {project.live_website_link && (
-                <a
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.live_website_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Live Website"
-                >
-                  <Globe className="h-6 w-6" />
-                </a>
-              )}
-              {project.github_repo_link && (
-                <a
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
-                  href={project.github_repo_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Repository"
-                >
-                  <Github className="h-6 w-6" />
-                </a>
-              )}
-            </div>
-          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-glass-border-light/50 dark:border-glass-border-dark/50 shadow-2xl cursor-pointer group">
+                <img
+                  alt={project.image_alt}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  src={project.image_src}
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="text-white text-lg font-semibold">View Full Image</span>
+                </div>
+                <div className="absolute bottom-4 right-4 flex gap-3">
+                  {project.live_website_link && (
+                    <a
+                      className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                      href={project.live_website_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Live Website"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Globe className="h-6 w-6" />
+                    </a>
+                  )}
+                  {project.github_repo_link && (
+                    <a
+                      className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white backdrop-blur-md transition hover:bg-white/40"
+                      href={project.github_repo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub Repository"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Github className="h-6 w-6" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="max-w-screen-lg max-h-[90vh] overflow-hidden p-0">
+              <img
+                src={project.image_src}
+                alt={project.image_alt}
+                className="w-full h-full object-contain"
+              />
+            </DialogContent>
+          </Dialog>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 py-12">
@@ -144,8 +161,7 @@ const ProjectDetails: React.FC = () => {
                 {project.overview}
               </p>
             </div>
-            {/* Problem ve Solution bölümlerini alt alta gelecek şekilde düzenledik */}
-            <div className="flex flex-col gap-8"> 
+            <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-4 rounded-xl border border-glass-border-light dark:border-glass-border-dark bg-glass-light/50 dark:bg-glass-dark/50 p-6 backdrop-blur-xl">
                 <h4 className="text-xl font-bold tracking-tight">The Problem</h4>
                 <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed text-justify">
@@ -198,21 +214,39 @@ const ProjectDetails: React.FC = () => {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Next Project</h2>
             </div>
-            <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl">
-              <img
-                alt={nextProject.image_alt}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src={nextProject.image_src}
-              />
-              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 md:p-8">
-                <h3 className="text-2xl font-bold text-white md:text-3xl">{nextProject.title}</h3>
-                <p className="text-base text-stone-200">{nextProject.tags}</p>
-                <Link to={`/projects/${nextProject.slug}`} className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-stone-200">
-                  View Case Study
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl cursor-pointer">
+                  <img
+                    alt={nextProject.image_alt}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={nextProject.image_src}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span className="text-white text-lg font-semibold">View Full Image</span>
+                  </div>
+                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 md:p-8">
+                    <h3 className="text-2xl font-bold text-white md:text-3xl">{nextProject.title}</h3>
+                    <p className="text-base text-stone-200">{nextProject.tags}</p>
+                    <Link
+                      to={`/projects/${nextProject.slug}`}
+                      className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-stone-200"
+                      onClick={(e) => e.stopPropagation()} // Dialog'un açılmasını engelle
+                    >
+                      View Case Study
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-screen-lg max-h-[90vh] overflow-hidden p-0">
+                <img
+                  src={nextProject.image_src}
+                  alt={nextProject.image_alt}
+                  className="w-full h-full object-contain"
+                />
+              </DialogContent>
+            </Dialog>
           </section>
         )}
       </main>
